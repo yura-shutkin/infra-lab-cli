@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-var ListCmd = &cobra.Command{
+var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List podman machines",
 	RunE:  runList,

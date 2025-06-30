@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-var StopCmd = &cobra.Command{
+var stopCmd = &cobra.Command{
 	Use:   "stop",
 	Short: "Stop podman machine",
 	RunE:  runStop,

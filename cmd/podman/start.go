@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-var StartCmd = &cobra.Command{
+var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start podman machine",
 	RunE:  runStart,

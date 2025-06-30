@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var RestartCmd = &cobra.Command{
+var restartCmd = &cobra.Command{
 	Use:   "restart",
 	Short: "Restart podman machine",
 	RunE:  runRestart,
@@ -12,12 +12,12 @@ var RestartCmd = &cobra.Command{
 
 func runRestart(cmd *cobra.Command, args []string) (err error) {
 	// Execute StopCmd
-	err = StopCmd.RunE(StopCmd, args)
+	err = stopCmd.RunE(stopCmd, args)
 	if err != nil {
 		return err
 	}
 	// Execute StartCmd
-	err = StartCmd.RunE(StartCmd, args)
+	err = startCmd.RunE(startCmd, args)
 	if err != nil {
 		return err
 	}
