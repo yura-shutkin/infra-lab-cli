@@ -18,3 +18,7 @@ OUTPUT_DIR="outputs"
 .PHONY: build
 build: ##				Build binary of main package
 	@go build -o ${OUTPUT_DIR}/infra-lab-cli main.go
+
+.PHONY: test
+test: ##				Run tests
+	@go test -v ./...

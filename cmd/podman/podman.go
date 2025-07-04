@@ -12,7 +12,7 @@ var RootCmd = &cobra.Command{
 var machineName string
 
 func init() {
-	RootCmd.PersistentFlags().StringVarP(&machineName, "machine-name", "m", "podman-machine-default", "Name of the podman machine")
+	RootCmd.PersistentFlags().StringVarP(&machineName, "name", "n", "podman-machine-default", "Name of the podman machine")
 	RootCmd.AddCommand(listCmd)
 	RootCmd.AddCommand(startCmd)
 	RootCmd.AddCommand(stopCmd)
