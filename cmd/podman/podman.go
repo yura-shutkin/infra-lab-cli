@@ -13,7 +13,7 @@ var machineName string
 
 func init() {
 	RootCmd.PersistentFlags().StringVarP(&machineName, "name", "n", "podman-machine-default", "Name of the podman machine")
-	RootCmd.AddCommand(listCmd)
+	RootCmd.AddCommand(ListCmd)
 	RootCmd.AddCommand(startCmd)
 	RootCmd.AddCommand(stopCmd)
 	RootCmd.AddCommand(restartCmd)

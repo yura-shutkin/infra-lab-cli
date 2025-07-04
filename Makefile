@@ -22,3 +22,7 @@ build: ##				Build binary of main package
 .PHONY: test
 test: ##				Run tests
 	@go test -v ./...
+
+.PHONY: tidy
+tidy: ##				Update go.mod and go.sum files
+	@go mod tidy

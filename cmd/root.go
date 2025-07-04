@@ -11,8 +11,6 @@ var rootCmd = &cobra.Command{
 	Short: "Local sandbox automation CLI",
 }
 
-var machineName string
-
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
@@ -21,4 +19,5 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(podman.RootCmd)
+	rootCmd.AddCommand(listClustersCmd)
 }

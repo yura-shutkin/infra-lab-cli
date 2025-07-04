@@ -67,6 +67,7 @@ func isConfigChanged(cmd *cobra.Command, args []string) (isChanged bool, err err
 }
 
 func runConfig(cmd *cobra.Command, args []string) (err error) {
+	// fmt.Printf("%#v\n", cmd.LocalNonPersistentFlags())
 	if cpus == "0" && memory == "0" && diskSize == "0" {
 		return cmd.Help()
 	}
@@ -140,7 +141,7 @@ func runConfig(cmd *cobra.Command, args []string) (err error) {
 			}
 		}
 
-		err = listCmd.RunE(listCmd, args)
+		err = ListCmd.RunE(ListCmd, args)
 		if err != nil {
 			return err
 		}
