@@ -14,9 +14,9 @@ var ListCmd = &cobra.Command{
 
 func runList(cmd *cobra.Command, args []string) (err error) {
 	out, err := exec.Command("podman", "machine", "list").CombinedOutput()
-	fmt.Print(string(out))
 	if err != nil {
-		fmt.Println("Error:", err)
+		return err
 	}
-	return err
+	fmt.Print(string(out))
+	return nil
 }

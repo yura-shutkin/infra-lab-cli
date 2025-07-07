@@ -2,9 +2,7 @@ package podman
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"log"
 	"os/exec"
 )
 
@@ -38,9 +36,9 @@ type PMachine struct {
 	Rosetta            bool   `json:"Rosetta"`
 }
 
-var inspectCmd = &cobra.Command{
-	Use:   "start",
-	Short: "Start podman machine",
+var InspectCmd = &cobra.Command{
+	Use:   "inspect",
+	Short: "Inspect podman machine",
 	RunE:  runInspect,
 }
 
@@ -49,13 +47,13 @@ var machines []PMachine
 func runInspect(cmd *cobra.Command, args []string) (err error) {
 	out, err := exec.Command("podman", "machine", "inspect", machineName).CombinedOutput()
 	if err != nil {
-
-		fmt.Println("Error:", err)
+		return err
 	}
 
 	err = json.Unmarshal(out, &machines)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	return err
+
+	return nil
 }

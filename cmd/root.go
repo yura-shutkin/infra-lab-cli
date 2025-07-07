@@ -19,5 +19,5 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(podman.RootCmd)
-	rootCmd.AddCommand(listClustersCmd)
+	rootCmd.AddCommand(statusCmd)
 }

@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-var startCmd = &cobra.Command{
+var StartCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start podman machine",
 	RunE:  runStart,
@@ -14,9 +14,9 @@ var startCmd = &cobra.Command{
 
 func runStart(cmd *cobra.Command, args []string) (err error) {
 	out, err := exec.Command("podman", "machine", "start", machineName).CombinedOutput()
-	fmt.Print(string(out))
 	if err != nil {
-		fmt.Println("Error:", err)
+		return err
 	}
-	return err
+	fmt.Print(string(out))
+	return nil
 }
