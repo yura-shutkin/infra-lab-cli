@@ -109,3 +109,67 @@ func Test_convertMiBToGiB(t *testing.T) {
 		})
 	}
 }
+
+func TestByteCountIEC(t *testing.T) {
+	type args struct {
+		b int64
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "Bytes less than 1 KiB",
+			args: args{b: 512},
+			want: "512 B",
+		},
+		{
+			name: "Exactly 1 KiB",
+			args: args{b: 1024},
+			want: "1.0 KiB",
+		},
+		{
+			name: "Exactly 1.5 KiB",
+			args: args{b: 1536},
+			want: "1.5 KiB",
+		},
+		{
+			name: "Multiple KiB",
+			args: args{b: 2048},
+			want: "2.0 KiB",
+		},
+		{
+			name: "Exactly 1 MiB",
+			args: args{b: 1024 * 1024},
+			want: "1.0 MiB",
+		},
+		{
+			name: "Exactly 1 GiB",
+			args: args{b: 1024 * 1024 * 1024},
+			want: "1.0 GiB",
+		},
+		{
+			name: "Exactly 1 TiB",
+			args: args{b: 1024 * 1024 * 1024 * 1024},
+			want: "1.0 TiB",
+		},
+		{
+			name: "Exactly 1 PiB",
+			args: args{b: 1024 * 1024 * 1024 * 1024 * 1024},
+			want: "1.0 PiB",
+		},
+		{
+			name: "Exactly 1 EiB",
+			args: args{b: 1024 * 1024 * 1024 * 1024 * 1024 * 1024},
+			want: "1.0 EiB",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ByteCountIEC(tt.args.b); got != tt.want {
+				t.Errorf("ByteCountIEC() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

@@ -10,7 +10,7 @@ import (
 )
 
 var ConfigCmd = &cobra.Command{
-	Use:   "config",
+	Use:   "config machine",
 	Short: "Configure podman machine",
 	RunE:  runConfig,
 }
@@ -30,15 +30,15 @@ func isConfigChanged(cmd *cobra.Command, args []string) (isChanged bool, err err
 		return isChanged, err
 	}
 
-	if isParamChanged(cpus, strconv.Itoa(machines[0].Resources.CPUs)) {
+	if isParamChanged(cpus, strconv.Itoa(inspectedMachines[0].Resources.CPUs)) {
 		return true, nil
 	}
 
-	if isParamChanged(memory, strconv.Itoa(machines[0].Resources.Memory)) {
+	if isParamChanged(memory, strconv.Itoa(inspectedMachines[0].Resources.Memory)) {
 		return true, nil
 	}
 
-	if isParamChanged(diskSize, strconv.Itoa(machines[0].Resources.DiskSize)) {
+	if isParamChanged(diskSize, strconv.Itoa(inspectedMachines[0].Resources.DiskSize)) {
 		return true, nil
 	}
 
@@ -61,15 +61,14 @@ func runConfig(cmd *cobra.Command, args []string) (err error) {
 	}
 
 	if isChanged {
-		if machines[0].State == "running" {
+		if inspectedMachines[0].State == "running" {
 			err = StopCmd.RunE(StopCmd, args)
 			if err != nil {
 				return err
 			}
 		}
 
-		// Update CPU
-		if isParamChanged(cpus, strconv.Itoa(machines[0].Resources.CPUs)) {
+		if isParamChanged(cpus, strconv.Itoa(inspectedMachines[0].Resources.CPUs)) {
 			out, err := exec.Command(
 				"podman", "machine", "set", "--cpus", cpus).CombinedOutput()
 			fmt.Print(string(out))
@@ -77,24 +76,22 @@ func runConfig(cmd *cobra.Command, args []string) (err error) {
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
-			fmt.Printf("CPU was updated from %d to %s\n", machines[0].Resources.CPUs, cpus)
+			fmt.Printf("CPU was updated from %d to %s\n", inspectedMachines[0].Resources.CPUs, cpus)
 		}
 
-		// Update Memory
 		memMiB, err := utils.ConvertToMiB(memory)
-		if isParamChanged(memMiB, strconv.Itoa(machines[0].Resources.Memory)) {
+		if isParamChanged(memMiB, strconv.Itoa(inspectedMachines[0].Resources.Memory)) {
 			out, err := exec.Command("podman", "machine", "set", "--memory", memMiB).CombinedOutput()
 			fmt.Print(string(out))
 
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
-			fmt.Printf("Memory was updated from %d to %s\n", machines[0].Resources.Memory, memory)
+			fmt.Printf("Memory was updated from %d to %s\n", inspectedMachines[0].Resources.Memory, memory)
 		}
 
-		// Update Disk Size
-		if isParamChanged(diskSize, strconv.Itoa(machines[0].Resources.DiskSize)) {
-			// TODO: new size must be greater than current size
+		if isParamChanged(diskSize, strconv.Itoa(inspectedMachines[0].Resources.DiskSize)) {
+			// TODO: new size must be greater than current
 			out, err := exec.Command(
 				"podman",
 				"machine",
@@ -106,10 +103,10 @@ func runConfig(cmd *cobra.Command, args []string) (err error) {
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
-			fmt.Printf("Disk size was updated from %d to %s\n", machines[0].Resources.DiskSize, diskSize)
+			fmt.Printf("Disk size was updated from %d to %s\n", inspectedMachines[0].Resources.DiskSize, diskSize)
 		}
 
-		if machines[0].State == "running" {
+		if inspectedMachines[0].State == "running" {
 			err = StartCmd.RunE(StartCmd, args)
 			if err != nil {
 				return err
@@ -127,8 +124,6 @@ func runConfig(cmd *cobra.Command, args []string) (err error) {
 	}
 	return nil
 }
-
-var cpus, memory, diskSize string
 
 func init() {
 	ConfigCmd.Flags().StringVarP(&cpus, "cpus", "c", "0", "Number of CPUs to allocate to the podman machine")

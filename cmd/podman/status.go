@@ -24,7 +24,7 @@ func runStatus(cmd *cobra.Command, args []string) (err error) {
 		return err
 	}
 	fmt.Printf("%s\t %s\t %d cpu\t %.1f GiB\t %d GiB\n",
-		machines[0].Name, machines[0].State,
-		machines[0].Resources.CPUs, utils.ConvertMiBToGiB(machines[0].Resources.Memory), machines[0].Resources.DiskSize)
+		inspectedMachines[0].Name, inspectedMachines[0].State,
+		inspectedMachines[0].Resources.CPUs, utils.ConvertMiBToGiB(inspectedMachines[0].Resources.Memory), inspectedMachines[0].Resources.DiskSize)
 	return nil
 }

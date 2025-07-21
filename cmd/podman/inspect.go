@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-type PMachine struct {
+type InspectedMachine struct {
 	ConfigDir struct {
 		Path string `json:"Path"`
 	} `json:"ConfigDir"`
@@ -42,7 +42,7 @@ var InspectCmd = &cobra.Command{
 	RunE:  runInspect,
 }
 
-var machines []PMachine
+var inspectedMachines []InspectedMachine
 
 func runInspect(cmd *cobra.Command, args []string) (err error) {
 	out, err := exec.Command("podman", "machine", "inspect", machineName).CombinedOutput()
@@ -50,7 +50,7 @@ func runInspect(cmd *cobra.Command, args []string) (err error) {
 		return err
 	}
 
-	err = json.Unmarshal(out, &machines)
+	err = json.Unmarshal(out, &inspectedMachines)
 	if err != nil {
 		return err
 	}
