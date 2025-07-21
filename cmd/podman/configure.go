@@ -3,6 +3,7 @@ package podman
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"infra-lab-cli/config"
 	"infra-lab-cli/utils"
 	"os/exec"
 	"strconv"
@@ -45,6 +46,11 @@ func isConfigChanged(cmd *cobra.Command, args []string) (isChanged bool, err err
 }
 
 func runConfig(cmd *cobra.Command, args []string) (err error) {
+	if !config.IsBinaryInPath(binaryName) {
+		fmt.Print(config.BinaryNotFoundError(binaryName))
+		return nil
+	}
+
 	if cpus == "0" && memory == "0" && diskSize == "0" {
 		return cmd.Help()
 	}

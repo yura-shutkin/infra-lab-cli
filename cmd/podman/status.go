@@ -3,6 +3,7 @@ package podman
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"infra-lab-cli/config"
 	"infra-lab-cli/utils"
 )
 
@@ -13,6 +14,11 @@ var StatusCmd = &cobra.Command{
 }
 
 func runStatus(cmd *cobra.Command, args []string) (err error) {
+	if !config.IsBinaryInPath(binaryName) {
+		fmt.Print(config.BinaryNotFoundError(binaryName))
+		return nil
+	}
+
 	err = InspectCmd.RunE(InspectCmd, args)
 	if err != nil {
 		return err

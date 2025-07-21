@@ -3,6 +3,7 @@ package podman
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"infra-lab-cli/config"
 	"os/exec"
 )
 
@@ -13,6 +14,11 @@ var StopCmd = &cobra.Command{
 }
 
 func runStop(cmd *cobra.Command, args []string) (err error) {
+	if !config.IsBinaryInPath(binaryName) {
+		fmt.Print(config.BinaryNotFoundError(binaryName))
+		return nil
+	}
+
 	out, err := exec.Command("podman", "machine", "stop", machineName).CombinedOutput()
 	if err != nil {
 		return err
