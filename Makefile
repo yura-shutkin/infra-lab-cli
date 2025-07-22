@@ -26,3 +26,7 @@ test: ##				Run tests
 .PHONY: tidy
 tidy: ##				Update go.mod and go.sum files
 	@go mod tidy
+
+.PHONY: lint
+lint: ##				Lint the code
+	@golangci-lint run --timeout 5m
