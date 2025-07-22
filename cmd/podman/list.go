@@ -81,20 +81,31 @@ func printMachines() {
 	}
 }
 
+func listMachines() (err error) {
+	out, err := exec.Command("podman", "machine", "list", "--format", "json", "--all-providers").CombinedOutput()
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(out, &listedMachines)
+	if err != nil {
+		fmt.Printf("Failed to parse podman machine list: %v\n", err)
+		return err
+	}
+
+	return nil
+}
+
 func runList(cmd *cobra.Command, args []string) (err error) {
 	if !config.IsBinaryInPath(binaryName) {
 		fmt.Print(config.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
-	out, err := exec.Command("podman", "machine", "list", "--format", "json", "--all-providers").CombinedOutput()
+	err = listMachines()
 	if err != nil {
-		return err
-	}
-
-	if err := json.Unmarshal(out, &listedMachines); err != nil {
-		fmt.Printf("Failed to parse podman machine list: %v\n", err)
-		return err
+		fmt.Printf("Error listing machines: %v\n", err)
+		return nil
 	}
 
 	printMachines()
