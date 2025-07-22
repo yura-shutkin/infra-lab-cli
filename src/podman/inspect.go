@@ -2,10 +2,11 @@ package podman
 
 import (
 	"encoding/json"
+	"fmt"
 	"os/exec"
 )
 
-func InspectMachine(machineName string) ([]InspectedMachine, error) {
+func InspectMachine(machineName string) (machine *InspectedMachine, err error) {
 	out, err := exec.Command("podman", "machine", "inspect", machineName).CombinedOutput()
 	if err != nil {
 		return nil, err
@@ -17,5 +18,9 @@ func InspectMachine(machineName string) ([]InspectedMachine, error) {
 		return nil, err
 	}
 
-	return machines, nil
+	if len(machines) == 0 {
+		return nil, fmt.Errorf("machine %s not found", machineName)
+	}
+
+	return &machines[0], nil
 }

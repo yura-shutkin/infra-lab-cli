@@ -20,16 +20,10 @@ func ConfigureMachine(binaryName, machineName string, params ConfigureParams) er
 		return nil
 	}
 
-	machines, err := InspectMachine(machineName)
+	machine, err := InspectMachine(machineName)
 	if err != nil {
 		return err
 	}
-
-	if len(machines) == 0 {
-		return fmt.Errorf("machine %s not found", machineName)
-	}
-
-	machine := machines[0]
 
 	isChanged := isConfigChanged(params, machine)
 	if !isChanged {
@@ -84,7 +78,7 @@ func ConfigureMachine(binaryName, machineName string, params ConfigureParams) er
 	return nil
 }
 
-func isConfigChanged(params ConfigureParams, machine InspectedMachine) bool {
+func isConfigChanged(params ConfigureParams, machine *InspectedMachine) bool {
 	if isParamChanged(params.CPUs, strconv.Itoa(machine.Resources.CPUs)) {
 		return true
 	}

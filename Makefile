@@ -29,4 +29,4 @@ tidy: ##				Update go.mod and go.sum files
 
 .PHONY: lint
 lint: ##				Lint the code
-	@golangci-lint run --timeout 5m
+	@golangci-lint run -c .golangci.yaml --timeout 5m

@@ -11,18 +11,10 @@ func RestartMachine(binaryName, machineName string) (err error) {
 		return nil
 	}
 
-	// TODO: 14-24 Duplicated code (configure.go)
-	var machines []InspectedMachine
-	machines, err = InspectMachine(machineName)
+	machine, err := InspectMachine(machineName)
 	if err != nil {
 		return err
 	}
-
-	if len(machines) == 0 {
-		return fmt.Errorf("machine %s not found", machineName)
-	}
-
-	machine := machines[0]
 
 	if machine.State == "running" {
 		err = StopMachine(binaryName, machineName)
