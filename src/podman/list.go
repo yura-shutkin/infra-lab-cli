@@ -3,7 +3,6 @@ package podman
 import (
 	"encoding/json"
 	"fmt"
-	"infra-lab-cli/config"
 	"infra-lab-cli/utils"
 	"os/exec"
 	"reflect"
@@ -20,10 +19,9 @@ var machineFields = []MachineField{
 	{"DiskSize", "Disk size", 9},
 }
 
-// ListMachines retrieves and displays all podman machines
 func ListMachines(binaryName string) error {
-	if !config.IsBinaryInPath(binaryName) {
-		fmt.Print(config.BinaryNotFoundError(binaryName))
+	if !utils.IsBinaryInPath(binaryName) {
+		fmt.Print(utils.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
@@ -37,7 +35,6 @@ func ListMachines(binaryName string) error {
 	return nil
 }
 
-// GetMachineList retrieves the list of podman machines
 func GetMachineList() ([]ListedMachine, error) {
 	out, err := exec.Command("podman", "machine", "list", "--format", "json", "--all-providers").CombinedOutput()
 	if err != nil {

@@ -15,6 +15,10 @@ func IsBinaryInPath(binary string) bool {
 	return true
 }
 
+func BinaryNotFoundError(binary string) error {
+	return fmt.Errorf("%s not found", binary)
+}
+
 func ConvertToMiB(size string) (convertedSize string, err error) {
 	// Could be 2048, 2048M, 2048m, 2G, 2.5G, 2g
 	result, err := strconv.Atoi(size)

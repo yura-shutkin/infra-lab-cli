@@ -1,6 +1,5 @@
 package podman
 
-// ListedMachine represents a machine from the list command
 type ListedMachine struct {
 	Name               string `json:"Name"`
 	Default            bool   `json:"Default"`
@@ -19,7 +18,6 @@ type ListedMachine struct {
 	UserModeNetworking bool   `json:"UserModeNetworking"`
 }
 
-// InspectedMachine represents a machine from the inspect command
 type InspectedMachine struct {
 	ConfigDir struct {
 		Path string `json:"Path"`
@@ -50,9 +48,14 @@ type InspectedMachine struct {
 	Rosetta            bool   `json:"Rosetta"`
 }
 
-// MachineField represents a field for displaying machine information
 type MachineField struct {
 	Name   string
 	Header string
 	Width  int
+}
+
+type ConfigureParams struct {
+	CPUs     string
+	Memory   string
+	DiskSize string
 }

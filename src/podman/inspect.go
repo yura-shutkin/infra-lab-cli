@@ -5,7 +5,6 @@ import (
 	"os/exec"
 )
 
-// InspectMachine inspects the specified podman machine and returns the machine data
 func InspectMachine(machineName string) ([]InspectedMachine, error) {
 	out, err := exec.Command("podman", "machine", "inspect", machineName).CombinedOutput()
 	if err != nil {

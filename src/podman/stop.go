@@ -2,14 +2,13 @@ package podman
 
 import (
 	"fmt"
-	"infra-lab-cli/config"
+	"infra-lab-cli/utils"
 	"os/exec"
 )
 
-// StopMachine stops the specified podman machine.
 func StopMachine(binaryName, machineName string) error {
-	if !config.IsBinaryInPath(binaryName) {
-		fmt.Print(config.BinaryNotFoundError(binaryName))
+	if !utils.IsBinaryInPath(binaryName) {
+		fmt.Print(utils.BinaryNotFoundError(binaryName))
 		return nil
 	}
 

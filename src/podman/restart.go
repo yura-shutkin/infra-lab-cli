@@ -1,14 +1,36 @@
 package podman
 
-// RestartMachine restarts the specified podman machine by stopping and then starting it
-func RestartMachine(binaryName, machineName string) error {
-	// Stop the machine
-	err := StopMachine(binaryName, machineName)
+import (
+	"fmt"
+	"infra-lab-cli/utils"
+)
+
+func RestartMachine(binaryName, machineName string) (err error) {
+	if !utils.IsBinaryInPath(binaryName) {
+		fmt.Print(utils.BinaryNotFoundError(binaryName))
+		return nil
+	}
+
+	// TODO: 14-24 Duplicated code (configure.go)
+	var machines []InspectedMachine
+	machines, err = InspectMachine(machineName)
 	if err != nil {
 		return err
 	}
 
-	// Start the machine
+	if len(machines) == 0 {
+		return fmt.Errorf("machine %s not found", machineName)
+	}
+
+	machine := machines[0]
+
+	if machine.State == "running" {
+		err = StopMachine(binaryName, machineName)
+		if err != nil {
+			return err
+		}
+	}
+
 	err = StartMachine(binaryName, machineName)
 	if err != nil {
 		return err

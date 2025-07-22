@@ -2,20 +2,11 @@ package podman
 
 import (
 	"github.com/spf13/cobra"
-	"infra-lab-cli/utils"
-	"os"
 )
 
 var RootCmd = &cobra.Command{
 	Use:   "podman",
 	Short: "Manage podman machines",
-	// TODO: this PreRun does not prevent subcommands from running if the binary is not found
-	PreRun: func(cmd *cobra.Command, args []string) {
-		if !utils.IsBinaryInPath(binaryName) {
-			cmd.Printf("'%s' not found\n", binaryName)
-			os.Exit(1)
-		}
-	},
 }
 
 var machineName string
