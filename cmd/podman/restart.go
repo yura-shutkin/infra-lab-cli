@@ -2,6 +2,7 @@ package podman
 
 import (
 	"github.com/spf13/cobra"
+	podmansrc "infra-lab-cli/src/podman"
 )
 
 var RestartCmd = &cobra.Command{
@@ -10,18 +11,6 @@ var RestartCmd = &cobra.Command{
 	RunE:  runRestart,
 }
 
-func runRestart(cmd *cobra.Command, args []string) (err error) {
-	// Execute StopCmd
-	err = StopCmd.RunE(StopCmd, args)
-	if err != nil {
-		return err
-	}
-
-	// Execute StartCmd
-	err = StartCmd.RunE(StartCmd, args)
-	if err != nil {
-		return err
-	}
-
-	return nil
+func runRestart(cmd *cobra.Command, args []string) error {
+	return podmansrc.RestartMachine(binaryName, machineName)
 }

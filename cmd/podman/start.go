@@ -1,10 +1,8 @@
 package podman
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
-	"infra-lab-cli/config"
-	"os/exec"
+	podmansrc "infra-lab-cli/src/podman"
 )
 
 var StartCmd = &cobra.Command{
@@ -13,16 +11,6 @@ var StartCmd = &cobra.Command{
 	RunE:  runStart,
 }
 
-func runStart(cmd *cobra.Command, args []string) (err error) {
-	if !config.IsBinaryInPath(binaryName) {
-		fmt.Print(config.BinaryNotFoundError(binaryName))
-		return nil
-	}
-
-	out, err := exec.Command("podman", "machine", "start", machineName).CombinedOutput()
-	if err != nil {
-		return err
-	}
-	fmt.Print(string(out))
-	return nil
+func runStart(cmd *cobra.Command, args []string) error {
+	return podmansrc.StartMachine(binaryName, machineName)
 }

@@ -1,0 +1,82 @@
+package podman
+
+import (
+	"encoding/json"
+	"fmt"
+	"infra-lab-cli/config"
+	"infra-lab-cli/utils"
+	"os/exec"
+	"reflect"
+	"strconv"
+)
+
+var machineFields = []MachineField{
+	{"Name", "Machine name", 30},
+	{"Running", "Running", 10},
+	{"VMType", "VMType", 10},
+	{"Default", "Default", 10},
+	{"CPUs", "CPUs", 6},
+	{"Memory", "Memory", 9},
+	{"DiskSize", "Disk size", 9},
+}
+
+// ListMachines retrieves and displays all podman machines
+func ListMachines(binaryName string) error {
+	if !config.IsBinaryInPath(binaryName) {
+		fmt.Print(config.BinaryNotFoundError(binaryName))
+		return nil
+	}
+
+	machines, err := GetMachineList()
+	if err != nil {
+		fmt.Printf("Error listing machines: %v\n", err)
+		return nil
+	}
+
+	printMachines(machines)
+	return nil
+}
+
+// GetMachineList retrieves the list of podman machines
+func GetMachineList() ([]ListedMachine, error) {
+	out, err := exec.Command("podman", "machine", "list", "--format", "json", "--all-providers").CombinedOutput()
+	if err != nil {
+		return nil, err
+	}
+
+	var machines []ListedMachine
+	err = json.Unmarshal(out, &machines)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse podman machine list: %v", err)
+	}
+
+	return machines, nil
+}
+
+func printMachines(machines []ListedMachine) {
+	for _, f := range machineFields {
+		fmt.Printf("%-*s", f.Width, f.Header)
+	}
+	fmt.Println()
+
+	for _, m := range machines {
+		val := reflect.ValueOf(m)
+		for _, f := range machineFields {
+			value := ""
+			switch f.Name {
+			case "Memory", "DiskSize":
+				var sizeInt int64
+				var sizeStr string
+
+				sizeStr = fmt.Sprintf("%s", val.FieldByName(f.Name).Interface())
+				// TODO: handle error
+				sizeInt, _ = strconv.ParseInt(sizeStr, 10, 64)
+				value = utils.ByteCountIEC(sizeInt)
+			default:
+				value = fmt.Sprintf("%v", val.FieldByName(f.Name).Interface())
+			}
+			fmt.Printf("%-*v", f.Width, value)
+		}
+		fmt.Println()
+	}
+}
