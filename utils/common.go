@@ -9,10 +9,7 @@ import (
 
 func IsBinaryInPath(binary string) bool {
 	_, err := exec.LookPath(binary)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func BinaryNotFoundError(binary string) error {
