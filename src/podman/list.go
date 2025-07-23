@@ -13,7 +13,6 @@ var machineFields = []MachineField{
 	{"Name", "Machine name", 30},
 	{"Running", "Running", 10},
 	{"VMType", "VMType", 10},
-	{"Default", "Default", 10},
 	{"CPUs", "CPUs", 6},
 	{"Memory", "Memory", 9},
 	{"DiskSize", "Disk size", 9},

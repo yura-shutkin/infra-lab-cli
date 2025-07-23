@@ -54,8 +54,12 @@ type MachineField struct {
 	Width  int
 }
 
-type ConfigureParams struct {
-	CPUs     string
-	Memory   string
-	DiskSize string
+type ConfigParam struct {
+	Value      string
+	IsProvided bool
+}
+type ConfigParams struct {
+	CPUs     ConfigParam
+	Memory   ConfigParam
+	DiskSize ConfigParam
 }
