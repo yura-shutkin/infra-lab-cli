@@ -19,7 +19,12 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 		return err
 	}
 
-	checkIfParamsWereChanged(params, machine)
+	// TODO: don't know how to test it
+	err = checkIfParamsWereChanged(&params, machine)
+	if err != nil {
+		fmt.Printf("An error occured while checking if params were changed: %s\n", err)
+		return nil
+	}
 	if !params.CPUs.IsChanged && !params.Memory.IsChanged && !params.DiskSize.IsChanged {
 		fmt.Println("No changes detected in configuration.")
 		return nil
@@ -34,8 +39,8 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 	}
 
 	if params.CPUs.IsChanged {
-		cmd := fmt.Sprintf("%s machine set --cpus %d %s", binaryName, params.CPUs.Value, machineName)
-		_, err := exec.Command(cmd).CombinedOutput()
+		args := []string{"machine", "set", "--cpus", strconv.Itoa(params.CPUs.Value), machineName}
+		_, err := exec.Command(binaryName, args...).CombinedOutput()
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
@@ -43,24 +48,24 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 	}
 
 	if params.Memory.IsChanged {
-		cmd := fmt.Sprintf("%s machine set --memory %d %s", binaryName, params.Memory.Value, machineName)
-		_, err := exec.Command(cmd).CombinedOutput()
+		args := []string{"machine", "set", "--memory", strconv.Itoa(params.Memory.Value), machineName}
+		_, err := exec.Command(binaryName, args...).CombinedOutput()
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
-		fmt.Printf("Memory was updated from %.1fG to %.1f\n", utils.ConvertMiBToGiB(machine.Resources.Memory), utils.ConvertMiBToGiB(params.Memory.Value))
+		fmt.Printf("Memory was updated from %.1fG to %.1fG\n", utils.ConvertMiBToGiB(machine.Resources.Memory), utils.ConvertMiBToGiB(params.Memory.Value))
 	}
 
 	if params.DiskSize.IsChanged {
 		if params.DiskSize.Value > machine.Resources.DiskSize {
-			cmd := fmt.Sprintf("%s machine set --disk-size %d %s", binaryName, params.DiskSize.Value, machineName)
-			_, err := exec.Command(cmd).CombinedOutput()
+			args := []string{"machine", "set", "--disk-size", strconv.Itoa(params.DiskSize.Value), machineName}
+			_, err := exec.Command(binaryName, args...).CombinedOutput()
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
 			fmt.Printf("Disk size was updated from %d to %d\n", machine.Resources.DiskSize, params.DiskSize.Value)
 		} else {
-			fmt.Println("Disk size must be greater than current size.")
+			fmt.Println("Disk size must be greater than the current one.")
 		}
 	}
 
@@ -74,38 +79,51 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 	return nil
 }
 
-func checkIfMemoryChanged(param *ConfigParam, currentValue int) {
-	var err error
+func checkIfMemoryChanged(param *ConfigParam, currentValue int) (err error) {
 	param.Value, err = utils.ConvertToMiB(param.ValueFlag)
 	if err != nil {
 		fmt.Printf("Invalid memory value: %v", err)
+		return err
 	}
 	if param.Value != currentValue {
 		param.IsChanged = true
 	}
+	return nil
 }
 
-func checkIfParamChanged(param *ConfigParam, currentValue int) {
-	var err error
-	param.Value, err = strconv.Atoi(param.ValueFlag)
+func checkIfParamChanged(param *ConfigParam, currentValue int) (err error) {
+	value, err := strconv.Atoi(param.ValueFlag)
 	if err != nil {
-		fmt.Printf("Invalid value, should be of Int type: %v\n", err)
+		return fmt.Errorf("invalid value should be of Int type")
 	}
+	param.Value = value
 	if param.Value != currentValue {
 		param.IsChanged = true
 	}
+	return nil
 }
 
-func checkIfParamsWereChanged(params ConfigParams, machine *InspectedMachine) {
+func checkIfParamsWereChanged(params *ConfigParams, machine *InspectedMachine) (err error) {
 	if params.CPUs.IsProvided {
-		checkIfParamChanged(&params.CPUs, machine.Resources.CPUs)
+		err := checkIfParamChanged(&params.CPUs, machine.Resources.CPUs)
+		if err != nil {
+			return err
+		}
 	}
 
 	if params.Memory.IsProvided {
-		checkIfMemoryChanged(&params.Memory, machine.Resources.Memory)
+		err := checkIfMemoryChanged(&params.Memory, machine.Resources.Memory)
+		if err != nil {
+			return err
+		}
 	}
 
 	if params.DiskSize.IsProvided {
-		checkIfParamChanged(&params.DiskSize, machine.Resources.DiskSize)
+		err := checkIfParamChanged(&params.DiskSize, machine.Resources.DiskSize)
+		if err != nil {
+			return err
+		}
 	}
+
+	return nil
 }
