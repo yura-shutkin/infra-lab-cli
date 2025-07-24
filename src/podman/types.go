@@ -66,3 +66,12 @@ type ConfigParams struct {
 	Memory   ConfigParam
 	DiskSize ConfigParam
 }
+
+type Connection struct {
+	Name      string `json:"Name"`
+	Uri       string `json:"URI"`
+	Identity  string `json:"Identity"`
+	IsMachine bool   `json:"IsMachine"`
+	IsDefault bool   `json:"Default"`
+	ReadWrite bool   `json:"ReadWrite"`
+}

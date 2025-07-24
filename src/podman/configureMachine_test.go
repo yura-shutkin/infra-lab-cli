@@ -34,7 +34,7 @@ func Test_checkIfParamChanged(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			param := tt.args.param
-			checkIfParamChanged(&param, tt.args.currentValue)
+			_ = checkIfParamChanged(&param, tt.args.currentValue)
 			if param.IsChanged != tt.want {
 				t.Errorf("IsChanged = %v, want %v", param.IsChanged, tt.want)
 			}
@@ -120,7 +120,7 @@ func Test_checkIfMemoryChanged(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			param := tt.args.param
-			checkIfMemoryChanged(&param, tt.args.currentValue)
+			_ = checkIfMemoryChanged(&param, tt.args.currentValue)
 			if param.IsChanged != tt.want {
 				t.Errorf("IsChanged = %v, want %v", param.IsChanged, tt.want)
 			}

@@ -2,6 +2,7 @@ package podman
 
 import (
 	"github.com/spf13/cobra"
+	podmansrc "infra-lab-cli/src/podman"
 )
 
 var RootCmd = &cobra.Command{
@@ -11,11 +12,27 @@ var RootCmd = &cobra.Command{
 
 var machineName string
 var binaryName = "podman"
+var defaultMachineName string
+var connections []podmansrc.Connection
+
+func machineNameCompletion(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	machineNames, err := podmansrc.GetMachineNames(&connections)
+	if err != nil {
+		return []string{}, cobra.ShellCompDirectiveNoFileComp
+	}
+	return machineNames, cobra.ShellCompDirectiveNoFileComp
+}
 
 func init() {
 	// TODO: Select the default machine name based on the default system connection
 	// TODO: Add possibility to autocomplete machine name when using the `--name` flag. Correlated with the previous TODO.
-	RootCmd.PersistentFlags().StringVarP(&machineName, "name", "n", "podman-machine-default", "Name of the podman machine")
+
+	_ = podmansrc.GetConnections(binaryName, &connections)
+	_ = podmansrc.GetDefaultMachineName(&connections, &defaultMachineName)
+
+	RootCmd.PersistentFlags().StringVarP(&machineName, "name", "n", defaultMachineName, "Name of the podman machine")
+	_ = RootCmd.RegisterFlagCompletionFunc("name", machineNameCompletion)
+
 	RootCmd.AddCommand(ListMachinesCmd)
 	RootCmd.AddCommand(StartMachineCmd)
 	RootCmd.AddCommand(StopMachineCmd)
