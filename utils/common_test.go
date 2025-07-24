@@ -11,55 +11,55 @@ func Test_convertToMiB(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    string
+		want    int
 		wantErr bool
 	}{
 		{
 			name:    "plain MiB value",
 			args:    args{size: "2048"},
-			want:    "2048",
+			want:    2048,
 			wantErr: false,
 		},
 		{
 			name:    "MiB with M suffix",
 			args:    args{size: "2048M"},
-			want:    "2048",
+			want:    2048,
 			wantErr: false,
 		},
 		{
 			name:    "MiB with m suffix",
 			args:    args{size: "2048m"},
-			want:    "2048",
+			want:    2048,
 			wantErr: false,
 		},
 		{
 			name:    "GiB with G suffix",
 			args:    args{size: "2G"},
-			want:    "2048",
+			want:    2048,
 			wantErr: false,
 		},
 		{
 			name:    "GiB with g suffix",
 			args:    args{size: "2g"},
-			want:    "2048",
+			want:    2048,
 			wantErr: false,
 		},
 		{
 			name:    "Fractional GiB",
 			args:    args{size: "2.5G"},
-			want:    "2560",
+			want:    2560,
 			wantErr: false,
 		},
 		{
 			name:    "Invalid input",
 			args:    args{size: "abc"},
-			want:    "0",
+			want:    0,
 			wantErr: true,
 		},
 		{
 			name:    "Invalid input GB",
 			args:    args{size: "1GB"},
-			want:    "0",
+			want:    0,
 			wantErr: true,
 		},
 	}

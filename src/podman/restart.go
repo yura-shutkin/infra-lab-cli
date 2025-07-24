@@ -11,7 +11,7 @@ func RestartMachine(binaryName, machineName string) (err error) {
 		return nil
 	}
 
-	machine, err := InspectMachine(machineName)
+	machine, err := InspectMachine(binaryName, machineName)
 	if err != nil {
 		return err
 	}

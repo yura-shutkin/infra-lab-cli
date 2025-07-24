@@ -5,12 +5,12 @@ import (
 	podmansrc "infra-lab-cli/src/podman"
 )
 
-var StopCmd = &cobra.Command{
+var StopMachineCmd = &cobra.Command{
 	Use:   "stop",
 	Short: "Stop podman machine",
-	RunE:  runStop,
+	RunE:  runStopMachine,
 }
 
-func runStop(cmd *cobra.Command, args []string) error {
+func runStopMachine(cmd *cobra.Command, args []string) error {
 	return podmansrc.StopMachine(binaryName, machineName)
 }

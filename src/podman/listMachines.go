@@ -24,7 +24,7 @@ func ListMachines(binaryName string) error {
 		return nil
 	}
 
-	machines, err := GetMachineList()
+	machines, err := GetMachineList(binaryName)
 	if err != nil {
 		fmt.Printf("Error listing machines: %v\n", err)
 		return nil
@@ -34,8 +34,8 @@ func ListMachines(binaryName string) error {
 	return nil
 }
 
-func GetMachineList() ([]ListedMachine, error) {
-	out, err := exec.Command("podman", "machine", "list", "--format", "json", "--all-providers").CombinedOutput()
+func GetMachineList(binaryName string) ([]ListedMachine, error) {
+	out, err := exec.Command(binaryName, "machine", "list", "--format", "json", "--all-providers").CombinedOutput()
 	if err != nil {
 		return nil, err
 	}

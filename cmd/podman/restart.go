@@ -5,12 +5,12 @@ import (
 	podmansrc "infra-lab-cli/src/podman"
 )
 
-var RestartCmd = &cobra.Command{
+var RestartMachineCmd = &cobra.Command{
 	Use:   "restart",
 	Short: "Restart podman machine",
-	RunE:  runRestart,
+	RunE:  runRestartMachine,
 }
 
-func runRestart(cmd *cobra.Command, args []string) error {
+func runRestartMachine(cmd *cobra.Command, args []string) error {
 	return podmansrc.RestartMachine(binaryName, machineName)
 }

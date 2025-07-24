@@ -12,7 +12,7 @@ func StopMachine(binaryName, machineName string) error {
 		return nil
 	}
 
-	out, err := exec.Command("podman", "machine", "stop", machineName).CombinedOutput()
+	out, err := exec.Command(binaryName, "machine", "stop", machineName).CombinedOutput()
 	if err != nil {
 		return err
 	}

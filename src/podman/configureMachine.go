@@ -7,26 +7,20 @@ import (
 	"strconv"
 )
 
-func isParamChanged(param string, currentValue string) bool {
-	if param != "0" && param != "" {
-		return param != currentValue
-	}
-	return false
-}
-
 func ConfigureMachine(binaryName, machineName string, params ConfigParams) error {
+	// TODO: is it wise to move this check to a function, or this action would not help with code duplication?
 	if !utils.IsBinaryInPath(binaryName) {
 		fmt.Print(utils.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
-	machine, err := InspectMachine(machineName)
+	machine, err := InspectMachine(binaryName, machineName)
 	if err != nil {
 		return err
 	}
 
-	isChanged := isConfigChanged(params, machine)
-	if !isChanged {
+	checkIfParamsWereChanged(params, machine)
+	if !params.CPUs.IsChanged && !params.Memory.IsChanged && !params.DiskSize.IsChanged {
 		fmt.Println("No changes detected in configuration.")
 		return nil
 	}
@@ -39,34 +33,32 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 		}
 	}
 
-	if isParamChanged(params.CPUs.Value, strconv.Itoa(machine.Resources.CPUs)) {
-		_, err := exec.Command("podman", "machine", "set", "--cpus", params.CPUs.Value, machineName).CombinedOutput()
+	if params.CPUs.IsChanged {
+		cmd := fmt.Sprintf("%s machine set --cpus %d %s", binaryName, params.CPUs.Value, machineName)
+		_, err := exec.Command(cmd).CombinedOutput()
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
-		fmt.Printf("CPU was updated from %d to %s\n", machine.Resources.CPUs, params.CPUs.Value)
+		fmt.Printf("CPU was updated from %d to %d\n", machine.Resources.CPUs, params.CPUs.Value)
 	}
 
-	memMiB, err := utils.ConvertToMiB(params.Memory.Value)
-	if err != nil {
-		return fmt.Errorf("invalid memory value: %v", err)
-	}
-	if isParamChanged(memMiB, strconv.Itoa(machine.Resources.Memory)) {
-		_, err := exec.Command("podman", "machine", "set", "--memory", memMiB, machineName).CombinedOutput()
+	if params.Memory.IsChanged {
+		cmd := fmt.Sprintf("%s machine set --memory %d %s", binaryName, params.Memory.Value, machineName)
+		_, err := exec.Command(cmd).CombinedOutput()
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
-		fmt.Printf("Memory was updated from %.1fG to %s\n", utils.ConvertMiBToGiB(machine.Resources.Memory), params.Memory.Value)
+		fmt.Printf("Memory was updated from %.1fG to %.1f\n", utils.ConvertMiBToGiB(machine.Resources.Memory), utils.ConvertMiBToGiB(params.Memory.Value))
 	}
 
-	if isParamChanged(params.DiskSize.Value, strconv.Itoa(machine.Resources.DiskSize)) {
-		// TODO: new size must be greater than current
-		if params.DiskSize.Value > strconv.Itoa(machine.Resources.DiskSize) {
-			_, err := exec.Command("podman", "machine", "set", "--disk-size", params.DiskSize.Value, machineName).CombinedOutput()
+	if params.DiskSize.IsChanged {
+		if params.DiskSize.Value > machine.Resources.DiskSize {
+			cmd := fmt.Sprintf("%s machine set --disk-size %d %s", binaryName, params.DiskSize.Value, machineName)
+			_, err := exec.Command(cmd).CombinedOutput()
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
-			fmt.Printf("Disk size was updated from %d to %s\n", machine.Resources.DiskSize, params.DiskSize.Value)
+			fmt.Printf("Disk size was updated from %d to %d\n", machine.Resources.DiskSize, params.DiskSize.Value)
 		} else {
 			fmt.Println("Disk size must be greater than current size.")
 		}
@@ -82,24 +74,38 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 	return nil
 }
 
-func isConfigChanged(params ConfigParams, machine *InspectedMachine) bool {
-	if isParamChanged(params.CPUs.Value, strconv.Itoa(machine.Resources.CPUs)) && params.CPUs.IsProvided {
-		return true
-	}
-
-	memProvided, err := utils.ConvertToMiB(params.Memory.Value)
+func checkIfMemoryChanged(param *ConfigParam, currentValue int) {
+	var err error
+	param.Value, err = utils.ConvertToMiB(param.ValueFlag)
 	if err != nil {
-		fmt.Printf("Invalid memory value: %v\n", err)
-		return false
+		fmt.Printf("Invalid memory value: %v", err)
+	}
+	if param.Value != currentValue {
+		param.IsChanged = true
+	}
+}
+
+func checkIfParamChanged(param *ConfigParam, currentValue int) {
+	var err error
+	param.Value, err = strconv.Atoi(param.ValueFlag)
+	if err != nil {
+		fmt.Printf("Invalid value, should be of Int type: %v\n", err)
+	}
+	if param.Value != currentValue {
+		param.IsChanged = true
+	}
+}
+
+func checkIfParamsWereChanged(params ConfigParams, machine *InspectedMachine) {
+	if params.CPUs.IsProvided {
+		checkIfParamChanged(&params.CPUs, machine.Resources.CPUs)
 	}
 
-	if isParamChanged(memProvided, strconv.Itoa(machine.Resources.Memory)) && params.Memory.IsProvided {
-		return true
+	if params.Memory.IsProvided {
+		checkIfMemoryChanged(&params.Memory, machine.Resources.Memory)
 	}
 
-	if isParamChanged(params.DiskSize.Value, strconv.Itoa(machine.Resources.DiskSize)) && params.DiskSize.IsProvided {
-		return true
+	if params.DiskSize.IsProvided {
+		checkIfParamChanged(&params.DiskSize, machine.Resources.DiskSize)
 	}
-
-	return false
 }

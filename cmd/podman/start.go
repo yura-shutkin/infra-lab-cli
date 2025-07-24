@@ -5,12 +5,12 @@ import (
 	podmansrc "infra-lab-cli/src/podman"
 )
 
-var StartCmd = &cobra.Command{
+var StartMachineCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start podman machine",
-	RunE:  runStart,
+	RunE:  runStartMachine,
 }
 
-func runStart(cmd *cobra.Command, args []string) error {
+func runStartMachine(cmd *cobra.Command, args []string) error {
 	return podmansrc.StartMachine(binaryName, machineName)
 }

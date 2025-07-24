@@ -11,7 +11,7 @@ func GetMachineStatus(binaryName, machineName string) error {
 		return nil
 	}
 
-	machine, err := InspectMachine(machineName)
+	machine, err := InspectMachine(binaryName, machineName)
 	if err != nil {
 		return err
 	}

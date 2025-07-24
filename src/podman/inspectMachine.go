@@ -6,8 +6,8 @@ import (
 	"os/exec"
 )
 
-func InspectMachine(machineName string) (machine *InspectedMachine, err error) {
-	out, err := exec.Command("podman", "machine", "inspect", machineName).CombinedOutput()
+func InspectMachine(binaryName string, machineName string) (machine *InspectedMachine, err error) {
+	out, err := exec.Command(binaryName, "machine", "inspect", machineName).CombinedOutput()
 	if err != nil {
 		return nil, err
 	}

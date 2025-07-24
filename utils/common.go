@@ -16,7 +16,7 @@ func BinaryNotFoundError(binary string) error {
 	return fmt.Errorf("%s not found", binary)
 }
 
-func ConvertToMiB(size string) (convertedSize string, err error) {
+func ConvertToMiB(size string) (convertedSize int, err error) {
 	// Could be 2048, 2048M, 2048m, 2G, 2.5G, 2g
 	result, err := strconv.Atoi(size)
 	if err != nil {
@@ -31,11 +31,11 @@ func ConvertToMiB(size string) (convertedSize string, err error) {
 		var sizeFloat float64
 		sizeFloat, err = strconv.ParseFloat(size, 32)
 		if err != nil {
-			return "0", err
+			return 0, err
 		}
-		return strconv.Itoa(int(sizeFloat * coefficient)), nil
+		return int(sizeFloat * coefficient), nil
 	}
-	return strconv.Itoa(result), nil
+	return result, nil
 }
 
 func ConvertMiBToGiB(size int) (convertedSize float64) {

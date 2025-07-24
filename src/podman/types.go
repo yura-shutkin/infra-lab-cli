@@ -55,9 +55,12 @@ type MachineField struct {
 }
 
 type ConfigParam struct {
-	Value      string
+	ValueFlag  string
+	Value      int
 	IsProvided bool
+	IsChanged  bool
 }
+
 type ConfigParams struct {
 	CPUs     ConfigParam
 	Memory   ConfigParam
