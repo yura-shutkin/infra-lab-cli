@@ -12,7 +12,8 @@ func StartMachine(binaryName, machineName string) error {
 		return nil
 	}
 
-	out, err := exec.Command(binaryName, "machine", "start", machineName).CombinedOutput()
+	args := []string{"machine", "start", machineName}
+	out, err := exec.Command(binaryName, args...).CombinedOutput()
 	if err != nil {
 		return err
 	}

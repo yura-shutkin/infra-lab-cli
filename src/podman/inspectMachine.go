@@ -7,7 +7,8 @@ import (
 )
 
 func InspectMachine(binaryName string, machineName string) (machine *InspectedMachine, err error) {
-	out, err := exec.Command(binaryName, "machine", "inspect", machineName).CombinedOutput()
+	args := []string{"machine", "inspect", machineName}
+	out, err := exec.Command(binaryName, args...).CombinedOutput()
 	if err != nil {
 		return nil, err
 	}

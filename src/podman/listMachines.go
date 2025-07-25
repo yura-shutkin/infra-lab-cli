@@ -35,7 +35,8 @@ func ListMachines(binaryName string) error {
 }
 
 func GetMachineList(binaryName string) ([]ListedMachine, error) {
-	out, err := exec.Command(binaryName, "machine", "list", "--format", "json", "--all-providers").CombinedOutput()
+	args := []string{"machine", "list", "--format", "json", "--all-providers"}
+	out, err := exec.Command(binaryName, args...).CombinedOutput()
 	if err != nil {
 		return nil, err
 	}
