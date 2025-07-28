@@ -10,8 +10,9 @@ var RootCmd = &cobra.Command{
 	Short: "Manage podman machines",
 }
 
+// TODO: consider to define config variable
 var machineName string
-var binaryName = "podman"
+var binaryName string
 var defaultMachineName string
 var connections []podmansrc.Connection
 
@@ -26,6 +27,7 @@ func machineNameCompletion(cmd *cobra.Command, args []string, toComplete string)
 func init() {
 	// TODO: Select the default machine name based on the default system connection
 	// TODO: Add possibility to autocomplete machine name when using the `--name` flag. Correlated with the previous TODO.
+	RootCmd.PersistentFlags().StringVarP(&binaryName, "binary", "b", "podman", "Binary to use")
 
 	_ = podmansrc.GetConnections(binaryName, &connections)
 	_ = podmansrc.GetDefaultMachineName(&connections, &defaultMachineName)
