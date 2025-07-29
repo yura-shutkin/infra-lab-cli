@@ -3,7 +3,6 @@ package podman
 import (
 	"fmt"
 	"infra-lab-cli/utils"
-	"os/exec"
 	"strconv"
 )
 
@@ -39,17 +38,24 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 	}
 
 	if params.CPUs.IsChanged {
-		args := []string{"machine", "set", "--cpus", strconv.Itoa(params.CPUs.Value), machineName}
-		_, err := exec.Command(binaryName, args...).CombinedOutput()
+		_, _, err := utils.ExecBinaryCommand(
+			binaryName,
+			fmt.Sprintf("machine set --cpus %s %s", strconv.Itoa(params.CPUs.Value), machineName),
+			false,
+		)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
+
 		fmt.Printf("CPU was updated from %d to %d\n", machine.Resources.CPUs, params.CPUs.Value)
 	}
 
 	if params.Memory.IsChanged {
-		args := []string{"machine", "set", "--memory", strconv.Itoa(params.Memory.Value), machineName}
-		_, err := exec.Command(binaryName, args...).CombinedOutput()
+		_, _, err := utils.ExecBinaryCommand(
+			binaryName,
+			fmt.Sprintf("machine set --memory %s %s", strconv.Itoa(params.Memory.Value), machineName),
+			false,
+		)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
@@ -58,8 +64,11 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 
 	if params.DiskSize.IsChanged {
 		if params.DiskSize.Value > machine.Resources.DiskSize {
-			args := []string{"machine", "set", "--disk-size", strconv.Itoa(params.DiskSize.Value), machineName}
-			_, err := exec.Command(binaryName, args...).CombinedOutput()
+			_, _, err := utils.ExecBinaryCommand(
+				binaryName,
+				fmt.Sprintf("machine set --disk-size %s %s", strconv.Itoa(params.DiskSize.Value), machineName),
+				false,
+			)
 			if err != nil {
 				fmt.Println("Error:", err)
 			}

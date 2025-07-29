@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
 	"os/exec"
 	"strconv"
@@ -55,4 +56,35 @@ func ByteCountIEC(b int64) string {
 	}
 	return fmt.Sprintf("%.1f %ciB",
 		float64(b)/float64(div), "KMGTPE"[exp])
+}
+
+func ExecBinaryCommand(binaryName, args string, showOutput bool) (stdout, stderr []byte, err error) {
+	cmd := exec.Command(binaryName, strings.Split(args, " ")...)
+
+	stdoutPipe, _ := cmd.StdoutPipe()
+	stderrPipe, _ := cmd.StderrPipe()
+
+	_ = cmd.Start()
+
+	go func() {
+		scanner := bufio.NewScanner(stdoutPipe)
+		for scanner.Scan() {
+			stdout = append(stdout, scanner.Text()...)
+			if showOutput {
+				fmt.Println(scanner.Text())
+			}
+		}
+	}()
+
+	go func() {
+		scanner := bufio.NewScanner(stderrPipe)
+		for scanner.Scan() {
+			stderr = append(stderr, scanner.Text()...)
+			if showOutput {
+				fmt.Println(scanner.Text())
+			}
+		}
+	}()
+
+	return stdout, stderr, cmd.Wait()
 }

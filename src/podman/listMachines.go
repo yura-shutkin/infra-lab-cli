@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"infra-lab-cli/utils"
-	"os/exec"
 	"reflect"
 	"strconv"
 )
@@ -35,14 +34,18 @@ func ListMachines(binaryName string) error {
 }
 
 func GetMachineList(binaryName string) ([]ListedMachine, error) {
-	args := []string{"machine", "list", "--format", "json", "--all-providers"}
-	out, err := exec.Command(binaryName, args...).CombinedOutput()
+	var stdout []byte
+	stdout, _, err := utils.ExecBinaryCommand(
+		binaryName,
+		"machine list --format json --all-providers",
+		false,
+	)
 	if err != nil {
 		return nil, err
 	}
 
 	var machines []ListedMachine
-	err = json.Unmarshal(out, &machines)
+	err = json.Unmarshal(stdout, &machines)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse podman machine list: %v", err)
 	}

@@ -3,18 +3,24 @@ package podman
 import (
 	"encoding/json"
 	"fmt"
-	"os/exec"
+	"infra-lab-cli/utils"
 	"strings"
 )
 
+// TODO: this function has wrong and confusing name
+
 func getConnections(binaryName string, connections *[]Connection) (err error) {
-	args := []string{"system", "connection", "list", "--format", "json"}
-	out, err := exec.Command(binaryName, args...).CombinedOutput()
+	var stdout []byte
+	stdout, _, err = utils.ExecBinaryCommand(
+		binaryName,
+		"system connection list --format json",
+		false,
+	)
 	if err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(out, &connections)
+	err = json.Unmarshal(stdout, &connections)
 	if err != nil {
 		return err
 	}

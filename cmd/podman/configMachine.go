@@ -12,9 +12,10 @@ var (
 )
 
 var ConfigMachineCmd = &cobra.Command{
-	Use:   "config",
-	Short: "Configure podman machine",
-	RunE:  runConfigMachine,
+	Use:     "config",
+	Aliases: []string{"c"},
+	Short:   "Configure podman machine",
+	RunE:    runConfigMachine,
 }
 
 func runConfigMachine(cmd *cobra.Command, args []string) error {

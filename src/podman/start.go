@@ -3,20 +3,22 @@ package podman
 import (
 	"fmt"
 	"infra-lab-cli/utils"
-	"os/exec"
 )
 
-func StartMachine(binaryName, machineName string) error {
+func StartMachine(binaryName, machineName string) (err error) {
 	if !utils.IsBinaryInPath(binaryName) {
 		fmt.Print(utils.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
-	args := []string{"machine", "start", machineName}
-	out, err := exec.Command(binaryName, args...).CombinedOutput()
+	_, _, err = utils.ExecBinaryCommand(
+		binaryName,
+		fmt.Sprintf("machine start %s", machineName),
+		true,
+	)
 	if err != nil {
 		return err
 	}
-	fmt.Print(string(out))
+
 	return nil
 }
