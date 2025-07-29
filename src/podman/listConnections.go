@@ -10,8 +10,7 @@ import (
 // TODO: this function has wrong and confusing name
 
 func getConnections(binaryName string, connections *[]Connection) (err error) {
-	var stdout []byte
-	stdout, _, err = utils.ExecBinaryCommand(
+	stdout, _, err := utils.ExecBinaryCommand(
 		binaryName,
 		"system connection list --format json",
 		false,

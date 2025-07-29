@@ -7,8 +7,7 @@ import (
 )
 
 func InspectMachine(binaryName string, machineName string) (machine *InspectedMachine, err error) {
-	var stdout []byte
-	stdout, _, err = utils.ExecBinaryCommand(
+	stdout, _, err := utils.ExecBinaryCommand(
 		binaryName,
 		fmt.Sprintf("machine inspect %s", machineName),
 		false,

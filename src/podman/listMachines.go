@@ -34,7 +34,6 @@ func ListMachines(binaryName string) error {
 }
 
 func GetMachineList(binaryName string) ([]ListedMachine, error) {
-	var stdout []byte
 	stdout, _, err := utils.ExecBinaryCommand(
 		binaryName,
 		"machine list --format json --all-providers",
