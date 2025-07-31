@@ -34,6 +34,7 @@ func createCluster(binaryName string, cluster Cluster) (err error) {
 			cluster.ExtraArgs,
 		),
 		true,
+		false,
 	)
 
 	return err

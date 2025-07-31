@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"fmt"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -58,8 +59,14 @@ func ByteCountIEC(b int64) string {
 		float64(b)/float64(div), "KMGTPE"[exp])
 }
 
-func ExecBinaryCommand(binaryName, args string, showOutput bool) (stdout, stderr []byte, err error) {
+// TODO: is it wise to split this function to 2 different: exec and interactiveExec?
+
+func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool) (stdout, stderr []byte, err error) {
 	cmd := exec.Command(binaryName, strings.Split(args, " ")...)
+
+	if inputRequired {
+		cmd.Stdin = os.Stdin
+	}
 
 	stdoutPipe, _ := cmd.StdoutPipe()
 	stderrPipe, _ := cmd.StderrPipe()

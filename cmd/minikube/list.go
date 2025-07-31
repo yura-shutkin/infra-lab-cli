@@ -6,9 +6,10 @@ import (
 )
 
 var ListProfilesCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List profiles",
-	RunE:  runListProfiles,
+	Use:     "list",
+	Aliases: []string{"l"},
+	Short:   "List profiles",
+	RunE:    runListProfiles,
 }
 
 func runListProfiles(cmd *cobra.Command, args []string) error {

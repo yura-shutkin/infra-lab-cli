@@ -15,6 +15,7 @@ func StartMachine(binaryName, machineName string) (err error) {
 		binaryName,
 		fmt.Sprintf("machine start %s", machineName),
 		true,
+		false,
 	)
 	if err != nil {
 		return err

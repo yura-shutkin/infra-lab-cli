@@ -10,6 +10,7 @@ func deleteCluster(binaryName, clusterName string) (err error) {
 		binaryName,
 		fmt.Sprintf("-p %s delete", clusterName),
 		true,
+		false,
 	)
 	if err != nil {
 		return err

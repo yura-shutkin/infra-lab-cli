@@ -5,9 +5,7 @@ import (
 	"infra-lab-cli/utils"
 )
 
-// TODO: different style. Yet easier to implement
-
-func ListProfiles(binaryName string) (err error) {
+func Tunnel(binaryName string, cluster Cluster) (err error) {
 	if !utils.IsBinaryInPath(binaryName) {
 		fmt.Print(utils.BinaryNotFoundError(binaryName))
 		return nil
@@ -15,9 +13,9 @@ func ListProfiles(binaryName string) (err error) {
 
 	_, _, err = utils.ExecBinaryCommand(
 		binaryName,
-		"profile list",
+		fmt.Sprintf("-p %s tunnel", cluster.Name),
 		true,
-		false,
+		true,
 	)
 	if err != nil {
 		return err

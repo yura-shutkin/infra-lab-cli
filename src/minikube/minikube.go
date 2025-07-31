@@ -13,6 +13,7 @@ func GetSupportedKubeVersions(binaryName string) (versions []string, err error) 
 		binaryName,
 		"config defaults kubernetes-version -o json",
 		false,
+		false,
 	)
 	if err != nil {
 		return nil, err
@@ -42,6 +43,7 @@ func GetSupportedDrivers(binaryName string) (versions []string, err error) {
 		binaryName,
 		"config defaults driver -o json",
 		false,
+		false,
 	)
 	if err != nil {
 		return nil, err
@@ -59,6 +61,7 @@ func getClusters(binaryName string) (clusters []Cluster, err error) {
 	stdout, _, err := utils.ExecBinaryCommand(
 		binaryName,
 		"profile list -o json",
+		false,
 		false,
 	)
 	if err != nil {
