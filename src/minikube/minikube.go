@@ -1,0 +1,85 @@
+package minikube
+
+import (
+	"encoding/json"
+	"fmt"
+	"infra-lab-cli/utils"
+)
+
+// TODO: these functions look very similar and duplicated
+
+func GetSupportedKubeVersions(binaryName string) (versions []string, err error) {
+	stdout, _, err := utils.ExecBinaryCommand(
+		binaryName,
+		"config defaults kubernetes-version -o json",
+		false,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(stdout, &versions)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get the list of supported k8s versions: %v", err)
+	}
+
+	return versions, nil
+}
+
+func ListSupportedKubeVersions(binaryName string) (err error) {
+	versions, err := GetSupportedKubeVersions(binaryName)
+	if err != nil {
+		return err
+	}
+	for _, version := range versions {
+		fmt.Println(version)
+	}
+	return nil
+}
+
+func GetSupportedDrivers(binaryName string) (versions []string, err error) {
+	stdout, _, err := utils.ExecBinaryCommand(
+		binaryName,
+		"config defaults driver -o json",
+		false,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(stdout, &versions)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get the list of supported k8s versions: %v", err)
+	}
+
+	return versions, nil
+}
+
+func getClusters(binaryName string) (clusters []Cluster, err error) {
+	stdout, _, err := utils.ExecBinaryCommand(
+		binaryName,
+		"profile list -o json",
+		false,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	var mkList MkList
+	err = json.Unmarshal(stdout, &mkList)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse JSON: %v", err)
+	}
+	clusters = mkList.Valid
+
+	return clusters, nil
+}
+
+func getClusterIfExists(newCluster Cluster, clusters []Cluster) *Cluster {
+	for _, cluster := range clusters {
+		if cluster.Name == newCluster.Name {
+			return &cluster
+		}
+	}
+	return nil
+}

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"infra-lab-cli/cmd/minikube"
 	"infra-lab-cli/cmd/podman"
 	"os"
 )
@@ -19,5 +20,6 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(podman.RootCmd)
+	rootCmd.AddCommand(minikube.RootCmd)
 	rootCmd.AddCommand(statusCmd)
 }
