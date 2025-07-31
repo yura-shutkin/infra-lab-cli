@@ -45,7 +45,6 @@ func init() {
 	RootCmd.AddCommand(RestartClusterCmd)
 	RootCmd.AddCommand(CreateClusterCmd)
 	RootCmd.AddCommand(DeleteClusterCmd)
-	RootCmd.AddCommand(RecreateClusterCmd)
 	RootCmd.AddCommand(ListProfilesCmd)
 	RootCmd.AddCommand(ListSupportedVersionsCmd)
 	RootCmd.AddCommand(PauseClusterCmd)

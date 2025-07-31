@@ -7,13 +7,19 @@ import (
 
 var CreateClusterCmd = &cobra.Command{
 	Use:     "create",
-	Short:   "Create a new cluster",
+	Short:   "Create a new cluster or recreate existing by using --recreate",
 	Aliases: []string{"c"},
 	RunE:    runCreateCluster,
 }
 
+var recreate bool
+
 func runCreateCluster(cmd *cobra.Command, args []string) error {
-	return mksrc.CreateCluster(binaryName, cluster)
+	if recreate {
+		return mksrc.RecreateCluster(binaryName, cluster)
+	} else {
+		return mksrc.CreateCluster(binaryName, cluster)
+	}
 }
 
 func init() {
@@ -33,4 +39,5 @@ func init() {
 	CreateClusterCmd.Flags().StringVarP(&cluster.Config.DiskSizeFlag, "disk-size", "d", "10G", "Disk size allocated to the minikube VM")
 	CreateClusterCmd.Flags().StringVarP(&cluster.CIDR, "cidr", "", "172.16.0.0/16", "The CIDR to use")
 	CreateClusterCmd.Flags().IntVarP(&cluster.NodesCount, "nodes", "n", 1, "Number of nodes")
+	CreateClusterCmd.Flags().BoolVarP(&recreate, "recreate", "", false, "Recreate existing cluster")
 }
