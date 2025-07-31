@@ -8,7 +8,7 @@ import (
 var DeleteClusterCmd = &cobra.Command{
 	Use:     "delete",
 	Short:   "Delete cluster",
-	Aliases: []string{"d"},
+	Aliases: []string{"d", "del"},
 	RunE:    runDeleteCluster,
 }
 
