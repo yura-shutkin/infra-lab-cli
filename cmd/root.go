@@ -2,9 +2,8 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"infra-lab-cli/cmd/kind"
-	"infra-lab-cli/cmd/minikube"
-	"infra-lab-cli/cmd/podman"
+	"infra-lab-cli/cmd/cluster"
+	"infra-lab-cli/cmd/vm"
 	"os"
 )
 
@@ -20,8 +19,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(podman.RootCmd)
-	rootCmd.AddCommand(minikube.RootCmd)
-	rootCmd.AddCommand(kind.RootCmd)
+	rootCmd.AddCommand(vm.RootCmd)
+	rootCmd.AddCommand(cluster.RootCmd)
 	rootCmd.AddCommand(statusCmd)
 }

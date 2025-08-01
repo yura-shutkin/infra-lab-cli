@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"infra-lab-cli/cmd/minikube"
-	"infra-lab-cli/cmd/podman"
+	"infra-lab-cli/cmd/cluster/minikube"
+	"infra-lab-cli/cmd/vm/podman"
 )
 
 var statusCmd = &cobra.Command{
