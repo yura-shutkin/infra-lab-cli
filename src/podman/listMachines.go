@@ -72,9 +72,12 @@ func printMachines(machines []ListedMachine) {
 				var sizeStr string
 
 				sizeStr = fmt.Sprintf("%s", val.FieldByName(f.Name).Interface())
-				// TODO: handle error
-				sizeInt, _ = strconv.ParseInt(sizeStr, 10, 64)
-				value = utils.ByteCountIEC(sizeInt)
+				sizeInt, err := strconv.ParseInt(sizeStr, 10, 64)
+				if err != nil {
+					value = "N/A"
+				} else {
+					value = utils.ByteCountIEC(sizeInt)
+				}
 			default:
 				value = fmt.Sprintf("%v", val.FieldByName(f.Name).Interface())
 			}
