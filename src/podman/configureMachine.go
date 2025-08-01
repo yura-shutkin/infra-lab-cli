@@ -21,7 +21,7 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 	// TODO: don't know how to test it
 	err = checkIfParamsWereChanged(&params, machine)
 	if err != nil {
-		fmt.Printf("An error occured while checking if params were changed: %s\n", err)
+		fmt.Printf("An error occurred while checking if params were changed: %s\n", err)
 		return nil
 	}
 	if !params.CPUs.IsChanged && !params.Memory.IsChanged && !params.DiskSize.IsChanged {

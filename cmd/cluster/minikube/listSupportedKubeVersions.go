@@ -7,7 +7,7 @@ import (
 
 var ListSupportedVersionsCmd = &cobra.Command{
 	Use:   "list-k8s-versions",
-	Short: "List supportted k8s version",
+	Short: "List supported k8s version",
 	RunE:  runListSupportedVersions,
 }
 

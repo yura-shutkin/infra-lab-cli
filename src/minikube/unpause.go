@@ -8,7 +8,7 @@ import (
 func unpauseCluster(binaryName, clusterName string) (err error) {
 	_, _, err = utils.ExecBinaryCommand(
 		binaryName,
-		fmt.Sprintf("-p %s pause", clusterName),
+		fmt.Sprintf("-p %s unpause", clusterName),
 		true,
 		false,
 	)

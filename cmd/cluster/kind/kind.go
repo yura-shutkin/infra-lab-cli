@@ -7,7 +7,7 @@ import (
 
 var RootCmd = &cobra.Command{
 	Use:   "kind",
-	Short: "Manage minikube clusters",
+	Short: "Manage kind clusters",
 }
 
 var cluster kindsrc.Cluster
