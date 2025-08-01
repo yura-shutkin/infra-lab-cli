@@ -6,9 +6,10 @@ import (
 )
 
 var ListMachinesCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List podman machines",
-	RunE:  runListMachines,
+	Use:     "list",
+	Aliases: []string{"l"},
+	Short:   "List podman machines",
+	RunE:    runListMachines,
 }
 
 func runListMachines(cmd *cobra.Command, args []string) error {
