@@ -40,6 +40,7 @@ func GetMachineList(binaryName string) ([]ListedMachine, error) {
 		"machine list --format json --all-providers",
 		false,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return nil, err

@@ -11,6 +11,7 @@ func stopCluster(binaryName, clusterName string) (err error) {
 		fmt.Sprintf("-p %s stop", clusterName),
 		true,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return err

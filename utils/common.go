@@ -61,8 +61,9 @@ func ByteCountIEC(b int64) string {
 
 // TODO: is it wise to split this function to 2 different: exec and interactiveExec?
 
-func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool) (stdout, stderr []string, err error) {
+func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool, envs []string) (stdout, stderr []string, err error) {
 	cmd := exec.Command(binaryName, strings.Split(args, " ")...)
+	cmd.Env = append(os.Environ(), envs...)
 
 	if inputRequired {
 		cmd.Stdin = os.Stdin

@@ -16,6 +16,7 @@ func Tunnel(binaryName string, cluster Cluster) (err error) {
 		fmt.Sprintf("-p %s tunnel", cluster.Name),
 		true,
 		true,
+		[]string{},
 	)
 	if err != nil {
 		return err

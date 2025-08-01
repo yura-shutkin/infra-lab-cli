@@ -15,6 +15,7 @@ func getConnections(binaryName string, connections *[]Connection) (err error) {
 		"system connection list --format json",
 		false,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return err

@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"infra-lab-cli/cmd/cluster"
 	"infra-lab-cli/cmd/vm"
+	"infra-lab-cli/cmd/webhook"
 	"os"
 )
 
@@ -21,5 +22,6 @@ func Execute() {
 func init() {
 	rootCmd.AddCommand(vm.RootCmd)
 	rootCmd.AddCommand(cluster.RootCmd)
+	rootCmd.AddCommand(webhook.RootCmd)
 	rootCmd.AddCommand(statusCmd)
 }

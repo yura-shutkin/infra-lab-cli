@@ -2,7 +2,8 @@ package cluster
 
 import (
 	"github.com/spf13/cobra"
-	"infra-lab-cli/cmd/vm/podman"
+	"infra-lab-cli/cmd/cluster/kind"
+	"infra-lab-cli/cmd/cluster/minikube"
 )
 
 var RootCmd = &cobra.Command{
@@ -12,5 +13,6 @@ var RootCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(podman.RootCmd)
+	RootCmd.AddCommand(kind.RootCmd)
+	RootCmd.AddCommand(minikube.RootCmd)
 }

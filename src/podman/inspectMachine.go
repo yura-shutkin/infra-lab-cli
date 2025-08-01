@@ -13,6 +13,7 @@ func InspectMachine(binaryName string, machineName string) (machine *InspectedMa
 		fmt.Sprintf("machine inspect %s", machineName),
 		false,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return nil, err

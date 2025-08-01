@@ -10,6 +10,7 @@ func getClusters(binaryName string) (stdout []string, err error) {
 		"get clusters",
 		false,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return nil, err

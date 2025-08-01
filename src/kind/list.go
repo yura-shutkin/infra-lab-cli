@@ -18,6 +18,7 @@ func ListClusters(binaryName string) (err error) {
 		"get clusters",
 		true,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return err

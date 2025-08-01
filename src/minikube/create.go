@@ -35,6 +35,7 @@ func createCluster(binaryName string, cluster Cluster) (err error) {
 		),
 		true,
 		false,
+		[]string{},
 	)
 
 	return err

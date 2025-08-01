@@ -43,6 +43,7 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 			fmt.Sprintf("machine set --cpus %s %s", strconv.Itoa(params.CPUs.Value), machineName),
 			false,
 			false,
+			[]string{},
 		)
 		if err != nil {
 			fmt.Println("Error:", err)
@@ -57,6 +58,7 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 			fmt.Sprintf("machine set --memory %s %s", strconv.Itoa(params.Memory.Value), machineName),
 			false,
 			false,
+			[]string{},
 		)
 		if err != nil {
 			fmt.Println("Error:", err)
@@ -71,6 +73,7 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 				fmt.Sprintf("machine set --disk-size %s %s", strconv.Itoa(params.DiskSize.Value), machineName),
 				false,
 				false,
+				[]string{},
 			)
 			if err != nil {
 				fmt.Println("Error:", err)

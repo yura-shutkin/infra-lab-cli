@@ -11,6 +11,7 @@ func deleteCluster(binaryName, clusterName string) (err error) {
 		fmt.Sprintf("delete cluster --name %s", clusterName),
 		true,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return err

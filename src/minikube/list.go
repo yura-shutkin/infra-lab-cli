@@ -18,6 +18,7 @@ func ListProfiles(binaryName string) (err error) {
 		"profile list",
 		true,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return err

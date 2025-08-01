@@ -16,6 +16,7 @@ func StopMachine(binaryName, machineName string) (err error) {
 		fmt.Sprintf("machine stop %s", machineName),
 		true,
 		false,
+		[]string{},
 	)
 	if err != nil {
 		return err
