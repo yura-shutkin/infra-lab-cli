@@ -6,9 +6,9 @@ import (
 )
 
 var RootCmd = &cobra.Command{
-	Use:     "vm",
-	Aliases: []string{"v"},
-	Short:   "Manage VM machines",
+	Use:     "cluster",
+	Aliases: []string{"c"},
+	Short:   "Manage K8S clusters",
 }
 
 func init() {
