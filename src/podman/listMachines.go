@@ -6,6 +6,7 @@ import (
 	"infra-lab-cli/utils"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 var machineFields = []MachineField{
@@ -45,7 +46,9 @@ func GetMachineList(binaryName string) ([]ListedMachine, error) {
 	}
 
 	var machines []ListedMachine
-	err = json.Unmarshal(stdout, &machines)
+	data := strings.Join(stdout, "\n")
+	jsonBytes := []byte(data)
+	err = json.Unmarshal(jsonBytes, &machines)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse podman machine list: %v", err)
 	}

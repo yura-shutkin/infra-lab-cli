@@ -61,7 +61,7 @@ func ByteCountIEC(b int64) string {
 
 // TODO: is it wise to split this function to 2 different: exec and interactiveExec?
 
-func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool) (stdout, stderr []byte, err error) {
+func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool) (stdout, stderr []string, err error) {
 	cmd := exec.Command(binaryName, strings.Split(args, " ")...)
 
 	if inputRequired {
@@ -76,7 +76,7 @@ func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool) 
 	go func() {
 		scanner := bufio.NewScanner(stdoutPipe)
 		for scanner.Scan() {
-			stdout = append(stdout, scanner.Text()...)
+			stdout = append(stdout, scanner.Text())
 			if showOutput {
 				fmt.Println(scanner.Text())
 			}
@@ -86,7 +86,7 @@ func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool) 
 	go func() {
 		scanner := bufio.NewScanner(stderrPipe)
 		for scanner.Scan() {
-			stderr = append(stderr, scanner.Text()...)
+			stderr = append(stderr, scanner.Text())
 			if showOutput {
 				fmt.Println(scanner.Text())
 			}
@@ -94,4 +94,14 @@ func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool) 
 	}()
 
 	return stdout, stderr, cmd.Wait()
+}
+
+func IfStringInSlice(str string, list []string) bool {
+	for _, item := range list {
+		if item == str {
+			return true
+		}
+	}
+
+	return false
 }

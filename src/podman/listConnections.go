@@ -20,7 +20,9 @@ func getConnections(binaryName string, connections *[]Connection) (err error) {
 		return err
 	}
 
-	err = json.Unmarshal(stdout, &connections)
+	data := strings.Join(stdout, "\n")
+	jsonBytes := []byte(data)
+	err = json.Unmarshal(jsonBytes, &connections)
 	if err != nil {
 		return err
 	}

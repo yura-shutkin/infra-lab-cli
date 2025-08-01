@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"infra-lab-cli/utils"
+	"strings"
 )
 
 // TODO: these functions look very similar and duplicated
@@ -19,7 +20,9 @@ func GetSupportedKubeVersions(binaryName string) (versions []string, err error) 
 		return nil, err
 	}
 
-	err = json.Unmarshal(stdout, &versions)
+	data := strings.Join(stdout, "\n")
+	jsonBytes := []byte(data)
+	err = json.Unmarshal(jsonBytes, &versions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get the list of supported k8s versions: %v", err)
 	}
@@ -49,7 +52,9 @@ func GetSupportedDrivers(binaryName string) (versions []string, err error) {
 		return nil, err
 	}
 
-	err = json.Unmarshal(stdout, &versions)
+	data := strings.Join(stdout, "\n")
+	jsonBytes := []byte(data)
+	err = json.Unmarshal(jsonBytes, &versions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get the list of supported k8s versions: %v", err)
 	}
@@ -69,7 +74,9 @@ func getClusters(binaryName string) (clusters []Cluster, err error) {
 	}
 
 	var mkList MkList
-	err = json.Unmarshal(stdout, &mkList)
+	data := strings.Join(stdout, "\n")
+	jsonBytes := []byte(data)
+	err = json.Unmarshal(jsonBytes, &mkList)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse JSON: %v", err)
 	}

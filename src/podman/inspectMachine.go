@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"infra-lab-cli/utils"
+	"strings"
 )
 
 func InspectMachine(binaryName string, machineName string) (machine *InspectedMachine, err error) {
@@ -18,7 +19,9 @@ func InspectMachine(binaryName string, machineName string) (machine *InspectedMa
 	}
 
 	var machines []InspectedMachine
-	err = json.Unmarshal(stdout, &machines)
+	data := strings.Join(stdout, "\n")
+	jsonBytes := []byte(data)
+	err = json.Unmarshal(jsonBytes, &machines)
 	if err != nil {
 		return nil, err
 	}

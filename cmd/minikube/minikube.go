@@ -8,8 +8,7 @@ import (
 var RootCmd = &cobra.Command{
 	Use:     "minikube",
 	Aliases: []string{"mk"},
-
-	Short: "Manage minikube clusters",
+	Short:   "Manage minikube clusters",
 }
 
 var cluster mksrc.Cluster
