@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"infra-lab-cli/cmd/minikube"
 	"infra-lab-cli/cmd/podman"
 )
 
@@ -14,8 +15,7 @@ var statusCmd = &cobra.Command{
 
 func runStatus(cmd *cobra.Command, args []string) {
 	fmt.Println("Podman machines:")
-	err := podman.StatusCmd.RunE(podman.StatusCmd, args)
-	if err != nil {
-		fmt.Println(err)
-	}
+	_ = podman.StatusCmd.RunE(podman.StatusCmd, args)
+	fmt.Println("Minikube clusters:")
+	_ = minikube.ListProfilesCmd.RunE(minikube.ListProfilesCmd, args)
 }
