@@ -3,7 +3,7 @@ package podman
 import (
 	"encoding/json"
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 	"reflect"
 	"strconv"
 	"strings"
@@ -19,8 +19,8 @@ var machineFields = []MachineField{
 }
 
 func ListMachines(binaryName string) error {
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+	if !common.IsBinaryInPath(binaryName) {
+		fmt.Print(common.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
@@ -35,7 +35,7 @@ func ListMachines(binaryName string) error {
 }
 
 func GetMachineList(binaryName string) ([]ListedMachine, error) {
-	stdout, _, err := utils.ExecBinaryCommand(
+	stdout, _, err := common.ExecBinaryCommand(
 		binaryName,
 		"machine list --format json --all-providers",
 		false,
@@ -77,7 +77,7 @@ func printMachines(machines []ListedMachine) {
 				if err != nil {
 					value = "N/A"
 				} else {
-					value = utils.ByteCountIEC(sizeInt)
+					value = common.ByteCountIEC(sizeInt)
 				}
 			default:
 				value = fmt.Sprintf("%v", val.FieldByName(f.Name).Interface())

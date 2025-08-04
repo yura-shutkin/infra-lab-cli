@@ -2,12 +2,12 @@ package kind
 
 import (
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 )
 
 func RecreateCluster(binaryName string, cluster Cluster) (err error) {
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+	if !common.IsBinaryInPath(binaryName) {
+		fmt.Print(common.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
@@ -16,7 +16,7 @@ func RecreateCluster(binaryName string, cluster Cluster) (err error) {
 		return err
 	}
 
-	if utils.IfStringInSlice(cluster.Name, clusters) {
+	if common.IfStringInSlice(cluster.Name, clusters) {
 		err = deleteCluster(binaryName, cluster.Name)
 		if err != nil {
 			return err

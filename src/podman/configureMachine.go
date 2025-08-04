@@ -2,14 +2,14 @@ package podman
 
 import (
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 	"strconv"
 )
 
 func ConfigureMachine(binaryName, machineName string, params ConfigParams) error {
 	// TODO: is it wise to move this check to a function, or this action would not help with code duplication?
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+	if !common.IsBinaryInPath(binaryName) {
+		fmt.Print(common.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
@@ -38,7 +38,7 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 	}
 
 	if params.CPUs.IsChanged {
-		_, _, err := utils.ExecBinaryCommand(
+		_, _, err := common.ExecBinaryCommand(
 			binaryName,
 			fmt.Sprintf("machine set --cpus %s %s", strconv.Itoa(params.CPUs.Value), machineName),
 			false,
@@ -53,7 +53,7 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 	}
 
 	if params.Memory.IsChanged {
-		_, _, err := utils.ExecBinaryCommand(
+		_, _, err := common.ExecBinaryCommand(
 			binaryName,
 			fmt.Sprintf("machine set --memory %s %s", strconv.Itoa(params.Memory.Value), machineName),
 			false,
@@ -63,12 +63,12 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
-		fmt.Printf("Memory was updated from %.1fG to %.1fG\n", utils.ConvertMiBToGiB(machine.Resources.Memory), utils.ConvertMiBToGiB(params.Memory.Value))
+		fmt.Printf("Memory was updated from %.1fG to %.1fG\n", common.ConvertMiBToGiB(machine.Resources.Memory), common.ConvertMiBToGiB(params.Memory.Value))
 	}
 
 	if params.DiskSize.IsChanged {
 		if params.DiskSize.Value > machine.Resources.DiskSize {
-			_, _, err := utils.ExecBinaryCommand(
+			_, _, err := common.ExecBinaryCommand(
 				binaryName,
 				fmt.Sprintf("machine set --disk-size %s %s", strconv.Itoa(params.DiskSize.Value), machineName),
 				false,
@@ -95,7 +95,7 @@ func ConfigureMachine(binaryName, machineName string, params ConfigParams) error
 }
 
 func checkIfMemoryChanged(param *ConfigParam, currentValue int) (err error) {
-	param.Value, err = utils.ConvertToMiB(param.ValueFlag)
+	param.Value, err = common.ConvertToMiB(param.ValueFlag)
 	if err != nil {
 		fmt.Printf("Invalid memory value: %v", err)
 		return err

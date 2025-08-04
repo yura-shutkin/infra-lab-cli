@@ -2,7 +2,7 @@ package webhook
 
 import (
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 )
 
 func startWebhook(binaryName string, webhook Webhook) (err error) {
@@ -22,7 +22,7 @@ func startWebhook(binaryName string, webhook Webhook) (err error) {
 		envs = []string{fmt.Sprintf("WEBHOOK_SECRET=%s", webhook.Secret)}
 	}
 
-	_, _, err = utils.ExecBinaryCommand(
+	_, _, err = common.ExecBinaryCommand(
 		binaryName,
 		args,
 		true,
@@ -34,8 +34,8 @@ func startWebhook(binaryName string, webhook Webhook) (err error) {
 }
 
 func StartWebhook(binaryName string, webhook Webhook) (err error) {
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+	if !common.IsBinaryInPath(binaryName) {
+		fmt.Print(common.BinaryNotFoundError(binaryName))
 		return nil
 	}
 

@@ -2,11 +2,11 @@ package minikube
 
 import (
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 )
 
 func startCluster(binaryName string, cluster Cluster) (err error) {
-	_, _, err = utils.ExecBinaryCommand(
+	_, _, err = common.ExecBinaryCommand(
 		binaryName,
 		fmt.Sprintf("-p %s start", cluster.Name),
 		true,
@@ -21,8 +21,8 @@ func startCluster(binaryName string, cluster Cluster) (err error) {
 }
 
 func StartCluster(binaryName string, cluster Cluster) error {
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+	if !common.IsBinaryInPath(binaryName) {
+		fmt.Print(common.BinaryNotFoundError(binaryName))
 		return nil
 	}
 

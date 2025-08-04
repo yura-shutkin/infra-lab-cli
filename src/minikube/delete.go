@@ -2,11 +2,11 @@ package minikube
 
 import (
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 )
 
 func deleteCluster(binaryName, clusterName string) (err error) {
-	_, _, err = utils.ExecBinaryCommand(
+	_, _, err = common.ExecBinaryCommand(
 		binaryName,
 		fmt.Sprintf("-p %s delete", clusterName),
 		true,
@@ -21,8 +21,8 @@ func deleteCluster(binaryName, clusterName string) (err error) {
 }
 
 func DeleteCluster(binaryName string, cluster Cluster) (err error) {
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+	if !common.IsBinaryInPath(binaryName) {
+		fmt.Print(common.BinaryNotFoundError(binaryName))
 		return nil
 	}
 

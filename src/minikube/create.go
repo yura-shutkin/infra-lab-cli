@@ -2,7 +2,7 @@ package minikube
 
 import (
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 )
 
 func createCluster(binaryName string, cluster Cluster) (err error) {
@@ -17,7 +17,7 @@ func createCluster(binaryName string, cluster Cluster) (err error) {
 	fmt.Printf("\tDriver: %s\n", cluster.Config.Driver)
 	fmt.Printf("\tCIDR: %s\n", cluster.CIDR)
 
-	_, _, err = utils.ExecBinaryCommand(
+	_, _, err = common.ExecBinaryCommand(
 		binaryName,
 		// TODO: I dislike how fragile this construction is:
 		//   * It is hard to extend and read (long line)
@@ -42,8 +42,8 @@ func createCluster(binaryName string, cluster Cluster) (err error) {
 }
 
 func CreateCluster(binaryName string, cluster Cluster) error {
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+	if !common.IsBinaryInPath(binaryName) {
+		fmt.Print(common.BinaryNotFoundError(binaryName))
 		return nil
 	}
 

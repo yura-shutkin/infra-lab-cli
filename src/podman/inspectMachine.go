@@ -3,12 +3,12 @@ package podman
 import (
 	"encoding/json"
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 	"strings"
 )
 
 func InspectMachine(binaryName string, machineName string) (machine *InspectedMachine, err error) {
-	stdout, _, err := utils.ExecBinaryCommand(
+	stdout, _, err := common.ExecBinaryCommand(
 		binaryName,
 		fmt.Sprintf("machine inspect %s", machineName),
 		false,

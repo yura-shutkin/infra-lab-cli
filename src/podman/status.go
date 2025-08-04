@@ -2,12 +2,12 @@ package podman
 
 import (
 	"fmt"
-	"infra-lab-cli/utils"
+	"infra-lab-cli/src/common"
 )
 
 func GetMachineStatus(binaryName, machineName string) error {
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+	if !common.IsBinaryInPath(binaryName) {
+		fmt.Print(common.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
@@ -19,7 +19,7 @@ func GetMachineStatus(binaryName, machineName string) error {
 	fmt.Printf("%s\t %s\t %d cpu\t %.1f GiB\t %d GiB\n",
 		machine.Name, machine.State,
 		machine.Resources.CPUs,
-		utils.ConvertMiBToGiB(machine.Resources.Memory),
+		common.ConvertMiBToGiB(machine.Resources.Memory),
 		machine.Resources.DiskSize)
 
 	return nil
