@@ -1,8 +1,9 @@
 package podman
 
 import (
-	"github.com/spf13/cobra"
 	podmansrc "infra-lab-cli/src/podman"
+
+	"github.com/spf13/cobra"
 )
 
 var StopMachineCmd = &cobra.Command{

@@ -1,8 +1,9 @@
 package vm
 
 import (
-	"github.com/spf13/cobra"
 	"infra-lab-cli/cmd/vm/podman"
+
+	"github.com/spf13/cobra"
 )
 
 var RootCmd = &cobra.Command{

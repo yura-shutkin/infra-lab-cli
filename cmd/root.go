@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"infra-lab-cli/cmd/cluster"
 	"infra-lab-cli/cmd/vm"
 	"infra-lab-cli/cmd/webhook"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{

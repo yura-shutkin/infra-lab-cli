@@ -1,9 +1,10 @@
 package cluster
 
 import (
-	"github.com/spf13/cobra"
 	"infra-lab-cli/cmd/cluster/kind"
 	"infra-lab-cli/cmd/cluster/minikube"
+
+	"github.com/spf13/cobra"
 )
 
 var RootCmd = &cobra.Command{

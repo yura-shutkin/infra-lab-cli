@@ -1,8 +1,9 @@
 package minikube
 
 import (
-	"github.com/spf13/cobra"
 	mksrc "infra-lab-cli/src/minikube"
+
+	"github.com/spf13/cobra"
 )
 
 var DeleteClusterCmd = &cobra.Command{

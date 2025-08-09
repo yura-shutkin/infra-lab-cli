@@ -22,6 +22,7 @@ func ConvertToMiB(size string) (convertedSize int, err error) {
 	// Could be 2048, 2048M, 2048m, 2G, 2.5G, 2g
 	result, err := strconv.Atoi(size)
 	if err != nil {
+		// TODO: consider to switch to switch
 		coefficient := 1.0
 		if strings.Contains(strings.ToLower(size), "g") {
 			coefficient = 1024.0
