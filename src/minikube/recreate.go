@@ -2,12 +2,12 @@ package minikube
 
 import (
 	"fmt"
-	"infra-lab-cli/src/common"
+	"infra-lab-cli/src/utils"
 )
 
 func RecreateCluster(binaryName string, cluster Cluster) (err error) {
-	if !common.IsBinaryInPath(binaryName) {
-		fmt.Print(common.BinaryNotFoundError(binaryName))
+	if !utils.IsBinaryInPath(binaryName) {
+		fmt.Print(utils.BinaryNotFoundError(binaryName))
 		return nil
 	}
 

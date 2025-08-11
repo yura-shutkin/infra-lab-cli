@@ -2,7 +2,7 @@ package kind
 
 import (
 	"fmt"
-	"infra-lab-cli/src/common"
+	"infra-lab-cli/src/utils"
 )
 
 func createCluster(binaryName string, cluster Cluster) (err error) {
@@ -11,7 +11,7 @@ func createCluster(binaryName string, cluster Cluster) (err error) {
 		args += fmt.Sprintf(" --config=%s", cluster.Config)
 	}
 
-	_, _, err = common.ExecBinaryCommand(
+	_, _, err = utils.ExecBinaryCommand(
 		binaryName,
 		args,
 		true,
@@ -23,8 +23,8 @@ func createCluster(binaryName string, cluster Cluster) (err error) {
 }
 
 func CreateCluster(binaryName string, cluster Cluster) error {
-	if !common.IsBinaryInPath(binaryName) {
-		fmt.Print(common.BinaryNotFoundError(binaryName))
+	if !utils.IsBinaryInPath(binaryName) {
+		fmt.Print(utils.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
@@ -33,7 +33,7 @@ func CreateCluster(binaryName string, cluster Cluster) error {
 		return err
 	}
 
-	if common.IfStringInSlice(cluster.Name, clusters) {
+	if utils.IfStringInSlice(cluster.Name, clusters) {
 		fmt.Printf("Cluster %s already exists. Please use recreate command instead\n", cluster.Name)
 	} else {
 		err = createCluster(binaryName, cluster)

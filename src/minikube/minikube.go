@@ -3,14 +3,14 @@ package minikube
 import (
 	"encoding/json"
 	"fmt"
-	"infra-lab-cli/src/common"
+	"infra-lab-cli/src/utils"
 	"strings"
 )
 
 // TODO: these functions look very similar and duplicated
 
 func GetSupportedKubeVersions(binaryName string) (versions []string, err error) {
-	stdout, _, err := common.ExecBinaryCommand(
+	stdout, _, err := utils.ExecBinaryCommand(
 		binaryName,
 		"config defaults kubernetes-version -o json",
 		false,
@@ -43,7 +43,7 @@ func ListSupportedKubeVersions(binaryName string) (err error) {
 }
 
 func GetSupportedDrivers(binaryName string) (versions []string, err error) {
-	stdout, _, err := common.ExecBinaryCommand(
+	stdout, _, err := utils.ExecBinaryCommand(
 		binaryName,
 		"config defaults driver -o json",
 		false,
@@ -65,7 +65,7 @@ func GetSupportedDrivers(binaryName string) (versions []string, err error) {
 }
 
 func getClusters(binaryName string) (clusters []Cluster, err error) {
-	stdout, _, err := common.ExecBinaryCommand(
+	stdout, _, err := utils.ExecBinaryCommand(
 		binaryName,
 		"profile list -o json",
 		false,

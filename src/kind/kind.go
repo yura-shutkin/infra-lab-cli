@@ -1,11 +1,11 @@
 package kind
 
 import (
-	"infra-lab-cli/src/common"
+	"infra-lab-cli/src/utils"
 )
 
 func getClusters(binaryName string) (stdout []string, err error) {
-	stdout, _, err = common.ExecBinaryCommand(
+	stdout, _, err = utils.ExecBinaryCommand(
 		binaryName,
 		"get clusters",
 		false,
