@@ -2,28 +2,29 @@ package kind
 
 import (
 	"fmt"
+	"infra-lab-cli/config"
 	"infra-lab-cli/src/utils"
 )
 
-func RecreateCluster(binaryName string, cluster Cluster) (err error) {
-	if !utils.IsBinaryInPath(binaryName) {
-		fmt.Print(utils.BinaryNotFoundError(binaryName))
+func RecreateCluster(cluster config.Kind) (err error) {
+	if !utils.IsBinaryInPath(cluster.Binary) {
+		fmt.Print(utils.BinaryNotFoundError(cluster.Binary))
 		return nil
 	}
 
-	clusters, err := getClusters(binaryName)
+	clusters, err := getClusters(cluster.Binary)
 	if err != nil {
 		return err
 	}
 
-	if utils.IfStringInSlice(cluster.Name, clusters) {
-		err = deleteCluster(binaryName, cluster.Name)
+	if utils.IfStringInSlice(cluster.ClusterName, clusters) {
+		err = deleteCluster(cluster.Binary, cluster.ClusterName)
 		if err != nil {
 			return err
 		}
 	}
 
-	err = createCluster(binaryName, cluster)
+	err = createCluster(cluster)
 	if err != nil {
 		return err
 	}

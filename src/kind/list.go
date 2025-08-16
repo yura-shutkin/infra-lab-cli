@@ -5,7 +5,7 @@ import (
 	"infra-lab-cli/src/utils"
 )
 
-// TODO: different style. Yet easier to implement
+// TODO: different style. Yet easier to implement. Should be standardized in the future
 
 func ListClusters(binaryName string) (err error) {
 	if !utils.IsBinaryInPath(binaryName) {

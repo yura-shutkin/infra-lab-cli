@@ -1,7 +1,7 @@
 package kind
 
 import (
-	kindsrc "infra-lab-cli/src/kind"
+	"infra-lab-cli/config"
 
 	"github.com/spf13/cobra"
 )
@@ -11,13 +11,14 @@ var RootCmd = &cobra.Command{
 	Short: "Manage kind clusters",
 }
 
-var cluster kindsrc.Cluster
-var binaryName = "kind"
+var cfg config.ILCConfig
 
 func init() {
-	RootCmd.Flags().StringVarP(&cluster.Name, "cluster", "c", "local", "Name of the cluster to use")
-	RootCmd.PersistentFlags().StringVarP(&cluster.Config, "config", "", "", "Path to kind config")
-	RootCmd.PersistentFlags().StringVarP(&binaryName, "binary", "b", binaryName, "Binary to use")
+	cfg = *config.GetConfig()
+
+	RootCmd.PersistentFlags().StringVarP(&cfg.Apps.Kind.Binary, "binary", "b", cfg.Apps.Kind.Binary, "Binary to use")
+	RootCmd.Flags().StringVarP(&cfg.Apps.Kind.ClusterName, "cluster", "c", cfg.Apps.Kind.ClusterName, "Name of the cluster to use")
+	RootCmd.PersistentFlags().StringVarP(&cfg.Apps.Kind.ConfigPath, "config", "", cfg.Apps.Kind.ConfigPath, "Path to kind config")
 
 	RootCmd.AddCommand(CreateClustersCmd)
 	RootCmd.AddCommand(DeleteClustersCmd)
