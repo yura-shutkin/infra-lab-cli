@@ -13,5 +13,5 @@ var StartWebhookCmd = &cobra.Command{
 }
 
 func runStartWebhook(cmd *cobra.Command, args []string) error {
-	return webhooksrc.StartWebhook(cfg.Apps.Webhook.Binary, webhook)
+	return webhooksrc.StartWebhook(binaryName, webhook)
 }

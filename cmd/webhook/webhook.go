@@ -15,11 +15,12 @@ var RootCmd = &cobra.Command{
 
 var cfg config.ILCConfig
 var webhook webhookSrc.Webhook
+var binaryName string
 
 func init() {
 	cfg = *config.GetConfig()
 
-	RootCmd.PersistentFlags().StringVarP(&cfg.Apps.Webhook.Binary, "binary", "b", cfg.Apps.Webhook.Binary, "Binary to use")
+	RootCmd.PersistentFlags().StringVarP(&binaryName, "binary", "b", cfg.Apps.Webhook.Binary, "Binary to use")
 	RootCmd.PersistentFlags().StringVarP(&webhook.Secret, "secret", "s", cfg.Apps.Webhook.Secret, "Secret to use")
 	RootCmd.PersistentFlags().StringVarP(&webhook.ListenAddr, "addr", "", cfg.Apps.Webhook.ListenAddr, "Listen addr")
 	RootCmd.PersistentFlags().IntVarP(&webhook.ListenPort, "port", "", cfg.Apps.Webhook.ListenPort, "Listen port")

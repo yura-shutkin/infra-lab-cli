@@ -14,5 +14,5 @@ var RecreateClustersCmd = &cobra.Command{
 }
 
 func runRecreateClusters(cmd *cobra.Command, args []string) error {
-	return kindsrc.RecreateCluster(cfg.Apps.Kind.Binary, cluster)
+	return kindsrc.RecreateCluster(binaryName, cluster)
 }
