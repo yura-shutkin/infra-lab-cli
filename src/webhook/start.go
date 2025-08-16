@@ -2,17 +2,16 @@ package webhook
 
 import (
 	"fmt"
-	"infra-lab-cli/config"
 	"infra-lab-cli/src/utils"
 )
 
-func startWebhook(webhook config.Webhook) (err error) {
+func startWebhook(binaryName string, webhook Webhook) (err error) {
 	var envs []string
 	args := fmt.Sprintf("-hooks %s -template -ip %s -port %d -urlprefix %s -hotreload -logfile /dev/stdout",
 		webhook.WebhooksPath,
 		webhook.ListenAddr,
 		webhook.ListenPort,
-		webhook.Prefix,
+		webhook.UrlPrefix,
 	)
 
 	if webhook.ExtraArgs != "" {
@@ -24,7 +23,7 @@ func startWebhook(webhook config.Webhook) (err error) {
 	}
 
 	_, _, err = utils.ExecBinaryCommand(
-		webhook.Binary,
+		binaryName,
 		args,
 		true,
 		false,
@@ -34,13 +33,13 @@ func startWebhook(webhook config.Webhook) (err error) {
 	return err
 }
 
-func StartWebhook(webhook config.Webhook) (err error) {
-	if !utils.IsBinaryInPath(webhook.Binary) {
-		fmt.Print(utils.BinaryNotFoundError(webhook.Binary))
+func StartWebhook(binaryName string, webhook Webhook) (err error) {
+	if !utils.IsBinaryInPath(binaryName) {
+		fmt.Print(utils.BinaryNotFoundError(binaryName))
 		return nil
 	}
 
-	err = startWebhook(webhook)
+	err = startWebhook(binaryName, webhook)
 	if err != nil {
 		return err
 	}

@@ -14,5 +14,5 @@ var CreateClustersCmd = &cobra.Command{
 }
 
 func runCreateClusters(cmd *cobra.Command, args []string) error {
-	return kindsrc.CreateCluster(cfg.Apps.Kind)
+	return kindsrc.CreateCluster(cfg.Apps.Kind.Binary, cluster)
 }

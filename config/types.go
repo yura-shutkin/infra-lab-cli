@@ -32,7 +32,6 @@ type Webhook struct {
 	ListenPort   int    `mapstructure:"listen_port" yaml:"listen_port"`
 	WebhooksPath string `mapstructure:"webhooks_path" yaml:"webhooks_path"`
 	Prefix       string `mapstructure:"prefix" yaml:"prefix"`
-	ExtraArgs    string `mapstrucuture:"-" yaml:"-"`
 }
 
 type Kind struct {
