@@ -36,7 +36,7 @@ func runConfigMachine(cmd *cobra.Command, args []string) error {
 }
 
 func init() {
-	ConfigMachineCmd.Flags().StringVarP(&cpus, "cpus", "c", "2", "Number of CPUs to allocate to the podman machine")
-	ConfigMachineCmd.Flags().StringVarP(&memory, "memory", "m", "2G", "Memory in GiB or in MiB to allocate to the podman machine. E.g. 2G, 2048, 2048M")
-	ConfigMachineCmd.Flags().StringVarP(&diskSize, "disk-size", "d", "40", "Disk size in GiB for the podman machine")
+	ConfigMachineCmd.Flags().StringVarP(&cpus, "cpus", "c", cfg.Apps.Podman.CPUs, "Number of CPUs to allocate to the podman machine")
+	ConfigMachineCmd.Flags().StringVarP(&memory, "memory", "m", cfg.Apps.Podman.Memory, "Memory in GiB or in MiB to allocate to the podman machine. E.g. 2G, 2048, 2048M")
+	ConfigMachineCmd.Flags().StringVarP(&diskSize, "disk-size", "d", cfg.Apps.Podman.DiskSize, "Disk size in GiB for the podman machine")
 }
