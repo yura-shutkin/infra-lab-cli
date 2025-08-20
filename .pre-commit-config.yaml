@@ -1,0 +1,9 @@
+---
+repos:
+  - repo: local
+    hooks:
+      - id: golangci-lint
+        name: Run golangci-lint
+        entry: golangci-lint run -c .golangci.yaml --timeout 5m
+        language: system
+        types: [go]
