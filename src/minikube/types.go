@@ -51,11 +51,3 @@ type ExtraOptions struct {
 	Key       string `json:"Key"`
 	Value     string `json:"Value"`
 }
-
-// TODO: duplicated type?
-
-type ColumnField struct {
-	Name   string
-	Header string
-	Width  int
-}

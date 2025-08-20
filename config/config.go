@@ -118,7 +118,7 @@ func setDefaultValues() {
 	viper.SetDefault("apps.minikube.memory", "2G")
 	viper.SetDefault("apps.minikube.disk_size", "15G")
 
-	viper.SetDefault("apps.podman.machine_name", "podman-machine-defaul")
+	viper.SetDefault("apps.podman.machine_name", "podman-machine-default")
 	viper.SetDefault("apps.podman.cpus", "2")
 	viper.SetDefault("apps.podman.memory", "2G")
 	viper.SetDefault("apps.podman.disk_size", "10G")

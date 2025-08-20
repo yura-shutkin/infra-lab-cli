@@ -1,6 +1,7 @@
 package minikube
 
 import (
+	"infra-lab-cli/config"
 	mksrc "infra-lab-cli/src/minikube"
 
 	"github.com/spf13/cobra"
@@ -24,6 +25,8 @@ func runCreateCluster(cmd *cobra.Command, args []string) error {
 }
 
 func init() {
+	cfg = *config.GetConfig()
+
 	// TODO: somehow I could not figure out how to use `cluster.KubeVersions, _ = mksrc.GetSupportedKubeVersions(binaryName)` because it adds a list to completion as plain text
 	CreateClusterCmd.Flags().StringVarP(&cluster.Config.KubeConfig.KubeVersion, "kubeVersion", "v", cfg.Apps.Minikube.KubeVersion, "Version of Kubernetes cluster")
 	_ = CreateClusterCmd.RegisterFlagCompletionFunc("kubeVersion", getSupportedKubeVersions)

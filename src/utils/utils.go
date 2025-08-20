@@ -70,10 +70,19 @@ func ExecBinaryCommand(binaryName, args string, showOutput, inputRequired bool, 
 		cmd.Stdin = os.Stdin
 	}
 
-	stdoutPipe, _ := cmd.StdoutPipe()
-	stderrPipe, _ := cmd.StderrPipe()
+	stdoutPipe, err := cmd.StdoutPipe()
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to get stdout pipe: %w", err)
+	}
+	stderrPipe, err := cmd.StderrPipe()
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to get stderr pipe: %w", err)
+	}
 
-	_ = cmd.Start()
+	err = cmd.Start()
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to start command: %w", err)
+	}
 
 	go func() {
 		scanner := bufio.NewScanner(stdoutPipe)
