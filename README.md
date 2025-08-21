@@ -16,3 +16,9 @@ It was mainly created as a replacement for make files in [k8s-lab](https://githu
 - Utils
   - [Helm](https://helm.sh/)
   - [Skopeo](https://github.com/containers/skopeo)
+
+## Config
+
+You can set configs with both env variables or via config `~/.infra-lab.yaml`
+
+For example `ILC__APPS__MINIKUBE__KUBE_VERSION=v1.33.1 infra-lab-cli c minikube c` will override default version and set the value from env variable

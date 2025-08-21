@@ -1,62 +1,66 @@
 package config
 
 type ILCConfig struct {
-	Version     string `mapstructure:"version" yaml:"version"`
-	Apps        apps   `mapstructure:"apps" yaml:"apps"`
-	ProjectsDir string `mapstructure:"projects_dir" yaml:"projects_dir"`
+	Version     string `mapstructure:"version" default:"1.0"`
+	Apps        apps   `mapstructure:"apps" `
+	ProjectsDir string `mapstructure:"projects_dir" default:"~/.infra-lab"`
 }
 
 type apps struct {
-	Docker   dockerConfig `mapstructure:"docker" yaml:"docker"`
-	Helm     appConfig    `mapstructure:"helm" yaml:"helm"`
-	Kind     kind         `mapstructure:"kind" yaml:"kind"`
-	Minikube minikube     `mapstructure:"minikube" yaml:"minikube"`
-	Podman   podman       `mapstructure:"podman" yaml:"podman"`
-	Skopeo   appConfig    `mapstructure:"skopeo" yaml:"skopeo"`
-	Webhook  webhook      `mapstructure:"webhook" yaml:"webhook"`
+	Docker   dockerConfig `mapstructure:"docker" `
+	Helm     helm         `mapstructure:"helm" `
+	Kind     kind         `mapstructure:"kind" `
+	Minikube minikube     `mapstructure:"minikube" `
+	Podman   podman       `mapstructure:"podman" `
+	Skopeo   skopeo       `mapstructure:"skopeo" `
+	Webhook  webhook      `mapstructure:"webhook" `
 }
 
-type appConfig struct {
-	Binary string `mapstructure:"binary" yaml:"binary"`
+type skopeo struct {
+	Binary string `mapstructure:"binary" default:"skopeo"`
+}
+
+type helm struct {
+	Binary string `mapstructure:"binary" default:"helm"`
 }
 
 type dockerConfig struct {
-	Binary     string `mapstructure:"binary" yaml:"binary"`
-	ConfigPath string `mapstructure:"config_path" yaml:"config_path"`
+	Binary     string `mapstructure:"binary" default:"docker"`
+	ConfigPath string `mapstructure:"config_path" default:"~/.docker"`
 }
 
 type webhook struct {
-	Binary       string `mapstructure:"binary" yaml:"binary"`
-	Secret       string `mapstructure:"secret" yaml:"secret"`
-	ListenAddr   string `mapstructure:"listen_addr" yaml:"listen_addr"`
-	ListenPort   int    `mapstructure:"listen_port" yaml:"listen_port"`
-	WebhooksPath string `mapstructure:"webhooks_path" yaml:"webhooks_path"`
-	Prefix       string `mapstructure:"prefix" yaml:"prefix"`
+	Binary       string `mapstructure:"binary" default:"webhook"`
+	Secret       string `mapstructure:"secret" default:""`
+	ListenAddr   string `mapstructure:"listen_addr" default:"127.0.0.1"`
+	ListenPort   int    `mapstructure:"listen_port" default:"8080"`
+	WebhooksPath string `mapstructure:"webhooks_path" default:"./hooks.yaml"`
+	Prefix       string `mapstructure:"prefix" default:"hooks"`
 }
 
 type minikube struct {
-	Binary      string `mapstructure:"binary" yaml:"binary"`
-	ClusterName string `mapstructure:"cluster_name" yaml:"cluster_name"`
-	KubeVersion string `mapstructure:"kube_version" yaml:"kube_version"`
-	Driver      string `mapstructure:"driver" yaml:"driver"`
-	CNI         string `mapstructure:"cni" yaml:"cni"`
-	CPUs        string `mapstructure:"cpus" yaml:"cpus"`
-	Memory      string `mapstructure:"memory" yaml:"memory"`
-	DiskSize    string `mapstructure:"disk_size" yaml:"disk_size"`
-	CIDR        string `mapstructure:"cidr" yaml:"cidr"`
-	NodesCount  int    `mapstructure:"nodes_count" yaml:"nodes_count"`
+	Binary      string `mapstructure:"binary" default:"minikube"`
+	ClusterName string `mapstructure:"cluster_name" default:"mini-local"`
+	KubeVersion string `mapstructure:"kube_version" default:"v1.30.0"`
+	Driver      string `mapstructure:"driver" default:"podman"`
+	CNI         string `mapstructure:"cni" default:"auto"`
+	CPUs        string `mapstructure:"cpus" default:"2"`
+	Memory      string `mapstructure:"memory" default:"2G"`
+	DiskSize    string `mapstructure:"disk_size" default:"15G"`
+	CIDR        string `mapstructure:"cidr" default:"172.16.0.0/16"`
+	NodesCount  int    `mapstructure:"nodes_count" default:"1"`
 }
 
 type kind struct {
-	Binary      string `mapstructure:"binary" yaml:"binary"`
-	ClusterName string `mapstructure:"cluster_name" yaml:"cluster_name"`
-	ConfigPath  string `mapstructure:"config_path" yaml:"config_path"`
+	Binary      string `mapstructure:"binary" default:"kind"`
+	ClusterName string `mapstructure:"cluster_name" default:"kind-local"`
+	ConfigPath  string `mapstructure:"config_path" default:""`
 }
 
 type podman struct {
-	Binary      string `mapstructure:"binary" yaml:"binary"`
-	MachineName string `mapstructure:"machine_name" yaml:"machine_name"`
-	CPUs        string `mapstructure:"cpus" yaml:"cpus"`
-	Memory      string `mapstructure:"memory" yaml:"memory"`
-	DiskSize    string `mapstructure:"disk_size" yaml:"disk_size"`
+	Binary      string `mapstructure:"binary" default:"podman"`
+	MachineName string `mapstructure:"machine_name" default:"podman-machine-default"`
+	CPUs        string `mapstructure:"cpus" default:"2"`
+	Memory      string `mapstructure:"memory" default:"2G"`
+	DiskSize    string `mapstructure:"disk_size" default:"10G"`
 }
