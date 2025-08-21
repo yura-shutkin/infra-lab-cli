@@ -16,6 +16,12 @@ func GetConfig() *ILCConfig {
 }
 
 func setDefaultsAndBindEnvs(cfg any, path, envPrefix string) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Printf("Recovered from panic in setDefaultsAndBindEnvs: %v\n", r)
+		}
+	}()
+
 	cfgType := reflect.TypeOf(cfg)
 	cfgValue := reflect.ValueOf(cfg)
 
